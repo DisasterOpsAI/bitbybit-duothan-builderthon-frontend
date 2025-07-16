@@ -1,35 +1,67 @@
-import { type NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from 'next/server'
+import { adminDb } from '@/lib/firebase-admin'
+import { Team } from '@/lib/database-schema'
 
-// TODO: Backend Integration Point 1 - Team Registration
 export async function POST(request: NextRequest) {
   try {
-    const { teamName } = await request.json()
+    const { teamName, email, authProvider, authId } = await request.json()
 
     if (!teamName || !teamName.trim()) {
-      return NextResponse.json({ error: "Team name is required" }, { status: 400 })
+      return NextResponse.json({ error: 'Team name is required' }, { status: 400 })
     }
 
-    // TODO: Implement actual database logic
-    // For now, we'll simulate team registration
+    // Check if team name already exists
+    const existingTeamName = await adminDb
+      .collection('teams')
+      .where('name', '==', teamName.trim())
+      .get()
 
-    // Check if team name already exists (mock)
-    const existingTeams = ["TeamAlpha", "CodeWarriors", "BugHunters"] // Mock existing teams
-
-    if (existingTeams.includes(teamName.trim())) {
-      return NextResponse.json({ error: "Team name already exists" }, { status: 409 })
+    if (!existingTeamName.empty) {
+      return NextResponse.json({ error: 'Team name already exists' }, { status: 409 })
     }
 
-    // Simulate successful registration
-    // In real implementation, save to database
-    console.log(`Team registered: ${teamName}`)
+    // If we have auth info, check if user already has a team
+    if (authId) {
+      const existingTeam = await adminDb
+        .collection('teams')
+        .where('authId', '==', authId)
+        .get()
 
+      if (!existingTeam.empty) {
+        return NextResponse.json({ error: 'User already has a team' }, { status: 409 })
+      }
+    }
+
+    // Create new team if all auth info is provided
+    if (email && authProvider && authId) {
+      const newTeam: Omit<Team, 'id'> = {
+        name: teamName.trim(),
+        email,
+        authProvider,
+        authId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        totalPoints: 0,
+        completedChallenges: []
+      }
+
+      const docRef = await adminDb.collection('teams').add(newTeam)
+      
+      return NextResponse.json({ 
+        success: true, 
+        teamId: docRef.id,
+        team: { id: docRef.id, ...newTeam }
+      })
+    }
+
+    // Just validate team name availability
     return NextResponse.json({
       success: true,
-      message: "Team registered successfully",
+      message: 'Team name is available',
       teamName: teamName.trim(),
     })
   } catch (error) {
-    console.error("Team registration error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error('Team registration error:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

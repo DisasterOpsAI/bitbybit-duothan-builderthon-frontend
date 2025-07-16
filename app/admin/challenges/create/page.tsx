@@ -186,15 +186,40 @@ export default function CreateChallengePage() {
     setError('')
 
     try {
-      // TODO: Backend Integration Point 12
-      // Create new challenge
+      // Transform data to match database schema
+      const payload = {
+        title: challengeData.title,
+        description: '',
+        points: challengeData.points,
+        isActive: challengeData.status === 'active',
+        algorithmicProblem: {
+          title: challengeData.title,
+          description: challengeData.algorithmic.description,
+          constraints: challengeData.algorithmic.constraints,
+          inputFormat: '',
+          outputFormat: '',
+          sampleInput: challengeData.algorithmic.examples[0]?.input || '',
+          sampleOutput: challengeData.algorithmic.examples[0]?.output || '',
+          timeLimit: parseInt(challengeData.algorithmic.timeLimit) || 2,
+          memoryLimit: parseInt(challengeData.algorithmic.memoryLimit) || 256
+        },
+        buildathonProblem: {
+          title: challengeData.title,
+          description: challengeData.buildathon.description,
+          requirements: challengeData.buildathon.requirements.filter(r => r.trim()),
+          submissionFormat: 'github' as const,
+          allowedTechnologies: []
+        },
+        flag: challengeData.flag
+      }
+
       const response = await fetch('/api/admin/challenges', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
-        body: JSON.stringify(challengeData)
+        body: JSON.stringify(payload)
       })
 
       if (response.ok) {

@@ -59,10 +59,30 @@ export default function TeamSignupPage() {
 
     setIsLoading(true)
     try {
-      await signInWithGoogle()
-      // Store team name in localStorage for now
-      localStorage.setItem("teamName", teamName.trim())
-      router.push("/dashboard")
+      const userCredential = await signInWithGoogle()
+      
+      // Register team with Firebase after successful authentication
+      const response = await fetch("/api/teams/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          teamName: teamName.trim(),
+          email: userCredential.user?.email,
+          authProvider: 'google',
+          authId: userCredential.user?.uid
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        localStorage.setItem("teamId", data.teamId)
+        localStorage.setItem("teamName", teamName.trim())
+        router.push("/dashboard")
+      } else {
+        const data = await response.json()
+        setError(data.error || "Registration failed")
+        setIsLoading(false)
+      }
     } catch (err) {
       setError("Authentication failed. Please try again.")
       setIsLoading(false)

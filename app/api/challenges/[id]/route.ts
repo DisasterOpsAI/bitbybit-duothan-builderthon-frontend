@@ -1,68 +1,77 @@
-import { type NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
+import { adminDb } from "@/lib/firebase-admin"
 
-// TODO: Backend Integration Point 4 - Fetch Challenge Details
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const challengeId = params.id
+    const teamId = request.headers.get('x-team-id') // We'll set this from the frontend
 
-    // Mock challenge data
-    const mockChallenge = {
-      id: challengeId,
-      title: "Array Manipulation Master",
-      difficulty: "Easy" as const,
-      points: 100,
-      status: "available" as const,
-      algorithmic: {
-        description: `
-          <p>Given an array of integers, find the maximum sum of any contiguous subarray.</p>
-          <p>This is a classic problem that can be solved using Kadane's algorithm.</p>
-          <p><strong>Example:</strong> For array [-2, 1, -3, 4, -1, 2, 1, -5, 4], the maximum sum is 6 (subarray [4, -1, 2, 1]).</p>
-        `,
-        constraints: `
-          <ul>
-            <li>1 ≤ array length ≤ 10^5</li>
-            <li>-10^4 ≤ array[i] ≤ 10^4</li>
-            <li>Array contains at least one element</li>
-          </ul>
-        `,
-        examples: [
-          {
-            input: "[-2, 1, -3, 4, -1, 2, 1, -5, 4]",
-            output: "6",
-          },
-          {
-            input: "[1, 2, 3, 4, 5]",
-            output: "15",
-          },
-        ],
-        timeLimit: "2 seconds",
-        memoryLimit: "256 MB",
-      },
-      buildathon: {
-        description: `
-          <p>Create a web application that visualizes the maximum subarray problem and its solution.</p>
-          <p>Your application should allow users to input an array and see the algorithm in action.</p>
-        `,
-        requirements: [
-          "Interactive array input interface",
-          "Step-by-step algorithm visualization",
-          "Responsive design that works on mobile and desktop",
-          "Clean, modern UI with smooth animations",
-          "Proper error handling for invalid inputs",
-        ],
-        deliverables: [
-          "Complete source code on GitHub",
-          "Live demo deployment link",
-          "README with setup instructions",
-          "Brief explanation of your approach",
-        ],
-      },
-      flag: "6",
+    // Get challenge from Firebase
+    const challengeDoc = await adminDb.collection('challenges').doc(challengeId).get()
+    
+    if (!challengeDoc.exists) {
+      return NextResponse.json({ error: "Challenge not found" }, { status: 404 })
     }
 
-    return NextResponse.json(mockChallenge)
+    const challengeData = challengeDoc.data()
+    
+    if (!challengeData?.isActive) {
+      return NextResponse.json({ error: "Challenge is not active" }, { status: 403 })
+    }
+
+    // Check team progress if teamId is provided
+    let status = "available"
+    if (teamId) {
+      const progressQuery = await adminDb
+        .collection('team_progress')
+        .where('teamId', '==', teamId)
+        .where('challengeId', '==', challengeId)
+        .get()
+
+      if (!progressQuery.empty) {
+        const progress = progressQuery.docs[0].data()
+        if (progress.buildathonCompleted) {
+          status = "completed"
+        } else if (progress.algorithmicCompleted) {
+          status = "algorithmic_solved"
+        }
+      }
+    }
+
+    // Format response to match frontend expectations
+    const challenge = {
+      id: challengeId,
+      title: challengeData.title,
+      difficulty: getDifficultyFromPoints(challengeData.points),
+      points: challengeData.points,
+      status,
+      algorithmic: {
+        description: challengeData.algorithmicProblem.description,
+        constraints: challengeData.algorithmicProblem.constraints,
+        examples: [{
+          input: challengeData.algorithmicProblem.sampleInput,
+          output: challengeData.algorithmicProblem.sampleOutput,
+        }],
+        timeLimit: `${challengeData.algorithmicProblem.timeLimit} seconds`,
+        memoryLimit: `${challengeData.algorithmicProblem.memoryLimit} MB`,
+      },
+      buildathon: status !== "available" ? {
+        description: challengeData.buildathonProblem.description,
+        requirements: challengeData.buildathonProblem.requirements,
+        deliverables: ["Complete source code on GitHub", "README with setup instructions"],
+      } : undefined,
+      flag: challengeData.flag,
+    }
+
+    return NextResponse.json(challenge)
   } catch (error) {
     console.error("Failed to fetch challenge:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
+}
+
+function getDifficultyFromPoints(points: number): string {
+  if (points <= 100) return 'Easy'
+  if (points <= 200) return 'Medium'
+  return 'Hard'
 }

@@ -7,7 +7,7 @@ import { type User, onAuthStateChanged, signInWithPopup, signOut } from "firebas
 interface AuthContextType {
   user: User | null
   loading: boolean
-  signInWithGoogle: () => Promise<void>
+  signInWithGoogle: () => Promise<any>
   logout: () => Promise<void>
 }
 
@@ -29,13 +29,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Dynamically import Firebase to avoid SSR issues
     const initAuth = async () => {
       try {
-        const { auth, googleProvider } = await import("./firebase")
-
+        const { auth } = await import("./firebase")
+        const { onAuthStateChanged } = await import("firebase/auth")
+        
         const unsubscribe = onAuthStateChanged(auth, (user) => {
           setUser(user)
           setLoading(false)
         })
-
         return unsubscribe
       } catch (error) {
         console.error("Error initializing auth:", error)
@@ -59,7 +59,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signInWithGoogle = async () => {
     try {
       const { auth, googleProvider } = await import("./firebase")
-      await signInWithPopup(auth, googleProvider)
+      const { signInWithPopup } = await import("firebase/auth")
+      const result = await signInWithPopup(auth, googleProvider)
+      return result
     } catch (error) {
       console.error("Error signing in with Google:", error)
       throw error
@@ -69,6 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       const { auth } = await import("./firebase")
+      const { signOut } = await import("firebase/auth")
       await signOut(auth)
     } catch (error) {
       console.error("Error signing out:", error)

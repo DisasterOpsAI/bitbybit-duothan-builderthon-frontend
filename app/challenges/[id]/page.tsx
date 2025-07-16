@@ -64,9 +64,8 @@ export default function ChallengePage() {
 
   const fetchChallenge = async () => {
     try {
-      // TODO: Backend Integration Point 4
-      // Fetch challenge details
-      const response = await fetch(`/api/challenges/${challengeId}`)
+      const { ApiClient } = await import('@/lib/api-client')
+      const response = await ApiClient.fetchChallenge(challengeId)
       if (response.ok) {
         const data = await response.json()
         setChallenge(data)
@@ -124,13 +123,8 @@ export default function ChallengePage() {
     setError("")
 
     try {
-      // TODO: Backend Integration Point 6
-      // Submit flag for validation
-      const response = await fetch(`/api/challenges/${challengeId}/submit-flag`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ flag: flagInput.trim() }),
-      })
+      const { ApiClient } = await import('@/lib/api-client')
+      const response = await ApiClient.submitFlag(challengeId, flagInput.trim())
 
       if (response.ok) {
         setSuccess("Flag accepted! Buildathon challenge unlocked.")
@@ -162,13 +156,8 @@ export default function ChallengePage() {
     setError("")
 
     try {
-      // TODO: Backend Integration Point 7
-      // Submit buildathon solution
-      const response = await fetch(`/api/challenges/${challengeId}/submit-buildathon`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ githubLink: githubLink.trim() }),
-      })
+      const { ApiClient } = await import('@/lib/api-client')
+      const response = await ApiClient.submitBuildathon(challengeId, githubLink.trim())
 
       if (response.ok) {
         setSuccess("Buildathon submission successful! Challenge completed.")

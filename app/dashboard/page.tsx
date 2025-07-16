@@ -46,7 +46,11 @@ export default function TeamDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const [challengesRes, statsRes] = await Promise.all([fetch("/api/challenges/team"), fetch("/api/teams/stats")])
+      const { ApiClient } = await import('@/lib/api-client')
+      const [challengesRes, statsRes] = await Promise.all([
+        ApiClient.makeTeamRequest("/api/challenges/team"),
+        ApiClient.makeTeamRequest("/api/teams/stats")
+      ])
 
       if (challengesRes.ok && statsRes.ok) {
         const challengesData = await challengesRes.json()

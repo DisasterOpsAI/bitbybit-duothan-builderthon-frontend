@@ -28,9 +28,28 @@ export default function TeamLoginPage() {
     setError("")
 
     try {
-      await signInWithGoogle()
-      localStorage.setItem("teamName", teamName.trim())
-      router.push("/dashboard")
+      const userCredential = await signInWithGoogle()
+      
+      // Verify team exists and user is authorized
+      const response = await fetch("/api/teams/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          teamName: teamName.trim(),
+          authId: userCredential.user?.uid
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        localStorage.setItem("teamId", data.team.id)
+        localStorage.setItem("teamName", data.team.name)
+        router.push("/dashboard")
+      } else {
+        const data = await response.json()
+        setError(data.error || "Team verification failed")
+        setIsLoading(false)
+      }
     } catch (err) {
       setError("Authentication failed. Please try again.")
       setIsLoading(false)

@@ -1,95 +1,87 @@
-import { type NextRequest, NextResponse } from "next/server"
-import jwt from "jsonwebtoken"
+import { NextRequest, NextResponse } from "next/server"
+import { requireAdmin } from "@/lib/auth-middleware"
+import { adminDb } from "@/lib/firebase-admin"
+import { Challenge } from "@/lib/database-schema"
 
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic'
 
-// TODO: Backend Integration Point 10 & 12 - Admin Challenge Management
-export async function GET(request: NextRequest) {
+export const GET = requireAdmin(async (request: NextRequest) => {
   try {
-    // Verify admin token
-    const authHeader = request.headers.get("authorization")
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const challengesSnapshot = await adminDb.collection('challenges').orderBy('createdAt', 'desc').get()
+    
+    const challenges = []
+    for (const doc of challengesSnapshot.docs) {
+      const challengeData = doc.data()
+      
+      // Get submission stats
+      const submissionsSnapshot = await adminDb
+        .collection('submissions')
+        .where('challengeId', '==', doc.id)
+        .get()
+      
+      const totalSubmissions = submissionsSnapshot.size
+      const completions = submissionsSnapshot.docs.filter(doc => 
+        doc.data().status === 'accepted' && doc.data().type === 'buildathon'
+      ).length
+
+      challenges.push({
+        id: doc.id,
+        title: challengeData.title,
+        difficulty: getDifficultyFromPoints(challengeData.points),
+        points: challengeData.points,
+        status: challengeData.isActive ? 'active' : 'draft',
+        submissions: totalSubmissions,
+        completions,
+        createdAt: challengeData.createdAt.toDate().toISOString().split('T')[0]
+      })
     }
 
-    const token = authHeader.substring(7)
-
-    try {
-      jwt.verify(token, process.env.NEXTAUTH_SECRET || "demo_secret_key_change_in_production")
-    } catch {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 })
-    }
-
-    // Mock challenges data for admin
-    const mockChallenges = [
-      {
-        id: "1",
-        title: "Array Manipulation Master",
-        difficulty: "Easy" as const,
-        points: 100,
-        status: "active" as const,
-        submissions: 15,
-        completions: 8,
-        createdAt: "2024-01-15",
-      },
-      {
-        id: "2",
-        title: "Graph Traversal Challenge",
-        difficulty: "Medium" as const,
-        points: 200,
-        status: "active" as const,
-        submissions: 12,
-        completions: 5,
-        createdAt: "2024-01-14",
-      },
-      {
-        id: "3",
-        title: "Dynamic Programming Quest",
-        difficulty: "Hard" as const,
-        points: 300,
-        status: "draft" as const,
-        submissions: 0,
-        completions: 0,
-        createdAt: "2024-01-13",
-      },
-    ]
-
-    return NextResponse.json(mockChallenges)
+    return NextResponse.json(challenges)
   } catch (error) {
     console.error("Failed to fetch admin challenges:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
-}
+})
 
-export async function POST(request: NextRequest) {
+export const POST = requireAdmin(async (request: NextRequest) => {
   try {
-    // Verify admin token
-    const authHeader = request.headers.get("authorization")
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const token = authHeader.substring(7)
-
-    try {
-      jwt.verify(token, process.env.NEXTAUTH_SECRET || "demo_secret_key_change_in_production")
-    } catch {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 })
-    }
-
     const challengeData = await request.json()
 
-    // TODO: Save challenge to database
-    console.log("Creating challenge:", challengeData)
+    // Validate required fields
+    if (!challengeData.title || !challengeData.algorithmicProblem || !challengeData.buildathonProblem || !challengeData.flag) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    // Create new challenge
+    const newChallenge: Omit<Challenge, 'id'> = {
+      title: challengeData.title,
+      description: challengeData.description || '',
+      points: challengeData.points || 100,
+      order: challengeData.order || 0,
+      isActive: challengeData.isActive || false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      algorithmicProblem: challengeData.algorithmicProblem,
+      buildathonProblem: challengeData.buildathonProblem,
+      flag: challengeData.flag
+    }
+
+    const docRef = await adminDb.collection('challenges').add(newChallenge)
 
     return NextResponse.json({
       success: true,
       message: "Challenge created successfully",
-      id: Math.random().toString(36).substr(2, 9),
+      id: docRef.id,
     })
   } catch (error) {
     console.error("Failed to create challenge:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
+})
+
+function getDifficultyFromPoints(points: number): string {
+  if (points <= 100) return 'Easy'
+  if (points <= 200) return 'Medium'
+  return 'Hard'
 }
