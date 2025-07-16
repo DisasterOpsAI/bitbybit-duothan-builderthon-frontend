@@ -36,6 +36,11 @@ export async function POST(request: NextRequest) {
     })
 
     if (action === 'accept') {
+      // Get challenge info for points
+      const challengeDoc = await adminDb.collection('challenges').doc(challengeId).get()
+      const challengeData = challengeDoc.data()
+      const points = challengeData?.points || 0
+
       // Update team progress
       const progressQuery = await adminDb
         .collection('team_progress')
@@ -52,20 +57,27 @@ export async function POST(request: NextRequest) {
       }
 
       // Award points to team
-      const challengeDoc = await adminDb.collection('challenges').doc(challengeId).get()
-      const challengeData = challengeDoc.data()
-      const points = challengeData?.points || 0
-
       const teamDoc = await adminDb.collection('teams').doc(teamId).get()
       if (teamDoc.exists) {
-        const currentPoints = teamDoc.data()?.totalPoints || 0
-        const { FieldValue } = await import('firebase-admin/firestore')
-        await teamDoc.ref.update({
-          totalPoints: currentPoints + points,
-          completedChallenges: FieldValue.arrayUnion(challengeId),
-          updatedAt: new Date()
-        })
+        const currentData = teamDoc.data()
+        const currentPoints = currentData?.totalPoints || 0
+        const completedChallenges = currentData?.completedChallenges || []
+        
+        // Only award points if challenge not already completed
+        if (!completedChallenges.includes(challengeId)) {
+          const { FieldValue } = await import('firebase-admin/firestore')
+          await teamDoc.ref.update({
+            totalPoints: currentPoints + points,
+            completedChallenges: FieldValue.arrayUnion(challengeId),
+            updatedAt: new Date()
+          })
+        }
       }
+
+      // Update submission with points
+      await submissionDoc.ref.update({
+        points: points
+      })
 
       // Create notification for team
       const teamNotification = {
