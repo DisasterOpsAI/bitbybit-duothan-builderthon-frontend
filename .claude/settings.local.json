@@ -4,7 +4,9 @@
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
       "Bash(npx tsc:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(npm view:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
