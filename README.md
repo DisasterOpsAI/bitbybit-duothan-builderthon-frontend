@@ -194,7 +194,7 @@ node test-setup.js
 3. Modify challenge rendering in `app/challenges/[id]/page.tsx`
 
 ### Adding New Languages
-1. Update `LANGUAGES` array in challenge page
+1. Update ` LANGUAGES ` array in challenge page
 2. Add corresponding Judge0 language IDs
 3. Update syntax highlighting if needed
 
