@@ -193,18 +193,26 @@ export const adminChallengesCRUD = {
   // Read active challenges only
   async getActive(): Promise<Challenge[]> {
     try {
+      console.log('Fetching active challenges from Firestore...');
       const snapshot = await adminDb
         .collection(CHALLENGES_COLLECTION)
         .where('isActive', '==', true)
-        .orderBy('order', 'asc')
         .get();
       
-      return snapshot.docs.map((doc: any) => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate(),
-        updatedAt: doc.data().updatedAt?.toDate()
-      })) as Challenge[];
+      console.log('Found', snapshot.size, 'active challenges');
+      
+      const challenges = snapshot.docs.map((doc: any) => {
+        const data = doc.data();
+        console.log('Challenge data:', doc.id, { isActive: data.isActive, title: data.title });
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        };
+      }) as Challenge[];
+      
+      return challenges;
     } catch (error) {
       console.error('Error getting active challenges (admin):', error);
       throw error;

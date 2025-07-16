@@ -47,16 +47,36 @@ export default function TeamDashboard() {
   const fetchDashboardData = async () => {
     try {
       const { ApiClient } = await import('@/lib/api-client')
-      const [challengesRes, statsRes] = await Promise.all([
-        ApiClient.makeTeamRequest("/api/challenges/team"),
-        ApiClient.makeTeamRequest("/api/teams/stats")
-      ])
-
-      if (challengesRes.ok && statsRes.ok) {
+      
+      // Fetch challenges first
+      const challengesRes = await ApiClient.makeTeamRequest("/api/challenges/team")
+      
+      if (challengesRes.ok) {
         const challengesData = await challengesRes.json()
-        const statsData = await statsRes.json()
+        console.log("Fetched challenges:", challengesData)
         setChallenges(challengesData)
-        setTeamStats(statsData)
+      } else {
+        console.error("Failed to fetch challenges:", challengesRes.status)
+        const errorData = await challengesRes.json()
+        console.error("Challenges error:", errorData)
+      }
+
+      // Try to fetch stats, but don't fail if it doesn't work
+      try {
+        const statsRes = await ApiClient.makeTeamRequest("/api/teams/stats")
+        if (statsRes.ok) {
+          const statsData = await statsRes.json()
+          setTeamStats(statsData)
+        }
+      } catch (statsError) {
+        console.error("Failed to fetch team stats:", statsError)
+        // Use default stats if API fails
+        setTeamStats({
+          totalPoints: 0,
+          challengesCompleted: 0,
+          currentRank: 0,
+          totalTeams: 0,
+        })
       }
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error)
@@ -110,11 +130,20 @@ export default function TeamDashboard() {
 
       <div className="container mx-auto px-4 py-8">
         {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-black mb-2">
-            Welcome back, {user?.displayName || localStorage.getItem("teamName") || "Team"}
-          </h1>
-          <p className="text-gray-600">Continue your mission to restore the OASIS</p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-bold text-black mb-2">
+              Welcome back, {user?.displayName || localStorage.getItem("teamName") || "Team"}
+            </h1>
+            <p className="text-gray-600">Continue your mission to restore the OASIS</p>
+          </div>
+          <Button 
+            onClick={fetchDashboardData}
+            className="bg-black text-white hover:bg-gray-800"
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Refresh"}
+          </Button>
         </div>
 
         {/* Stats Cards */}
@@ -188,6 +217,11 @@ export default function TeamDashboard() {
           </TabsList>
 
           <TabsContent value="available" className="space-y-4">
+            <div className="mb-4 p-4 bg-gray-100 rounded">
+              <p className="text-sm text-gray-600">
+                Debug: Found {challenges.length} total challenges, {challenges.filter(c => c.status === "available" || c.status === "algorithmic_solved").length} available
+              </p>
+            </div>
             <div className="grid gap-4">
               {challenges
                 .filter((c) => c.status === "available" || c.status === "algorithmic_solved")

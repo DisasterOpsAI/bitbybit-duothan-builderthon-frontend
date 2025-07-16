@@ -215,6 +215,7 @@ export default function CreateChallengePage() {
         title: challengeData.title,
         description: '',
         points: challengeData.points,
+        order: 0,
         isActive: challengeData.status === 'active',
         algorithmicProblem: {
           title: challengeData.title,
