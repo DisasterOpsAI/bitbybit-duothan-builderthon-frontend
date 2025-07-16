@@ -20,36 +20,6 @@ export default function TeamSignupPage() {
   const { signInWithGoogle } = useAuth()
   const router = useRouter()
 
-  const handleTeamRegistration = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!teamName.trim()) {
-      setError("Team name is required")
-      return
-    }
-
-    setIsLoading(true)
-    setError("")
-
-    try {
-      const response = await fetch("/api/teams/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ teamName: teamName.trim() }),
-      })
-
-      if (response.ok) {
-        setSuccess("Team registered successfully! Please sign in with Google.")
-        setTeamName("")
-      } else {
-        const data = await response.json()
-        setError(data.error || "Registration failed")
-      }
-    } catch (err) {
-      setError("Network error. Please try again.")
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   const handleGoogleSignIn = async () => {
     if (!teamName.trim()) {
@@ -122,7 +92,7 @@ export default function TeamSignupPage() {
                 Team Registration
               </CardTitle>
               <CardDescription className="text-gray-600">
-                Choose a unique team name and authenticate to access challenges
+                Enter your team name and sign in with Google to access challenges
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -140,7 +110,7 @@ export default function TeamSignupPage() {
                 </Alert>
               )}
 
-              <form onSubmit={handleTeamRegistration} className="space-y-4">
+              <div className="space-y-4">
                 <div>
                   <Label htmlFor="teamName" className="text-black">
                     Team Name
@@ -155,31 +125,18 @@ export default function TeamSignupPage() {
                     disabled={isLoading}
                   />
                 </div>
-                <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800" disabled={isLoading}>
-                  {isLoading ? "Registering..." : "Register Team"}
-                </Button>
-              </form>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-gray-500">Or continue with</span>
-                </div>
               </div>
 
               <Button
                 onClick={handleGoogleSignIn}
-                variant="outline"
-                className="w-full border-gray-300 text-black hover:bg-gray-50 bg-transparent"
+                className="w-full bg-black text-white hover:bg-gray-800"
                 disabled={isLoading || !teamName.trim()}
               >
-                Continue with Google
+                {isLoading ? "Signing in..." : "Sign up with Google"}
               </Button>
 
               <p className="text-xs text-gray-500 text-center">
-                By registering, you agree to participate in the OASIS restoration challenge
+                By signing in, you agree to participate in the OASIS restoration challenge
               </p>
             </CardContent>
           </Card>

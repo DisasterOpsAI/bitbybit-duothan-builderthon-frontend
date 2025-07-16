@@ -69,7 +69,7 @@ export default function TeamLoginPage() {
               variant="outline"
               className="border-black text-black hover:bg-black hover:text-white bg-transparent"
             >
-              New Team? Sign Up
+              New Team? Join Here
             </Button>
           </Link>
         </div>
@@ -107,7 +107,7 @@ export default function TeamLoginPage() {
                 <Input
                   id="teamName"
                   type="text"
-                  placeholder="Enter your registered team name"
+                  placeholder="Enter your team name"
                   value={teamName}
                   onChange={(e) => setTeamName(e.target.value)}
                   className="border-gray-300"
@@ -127,7 +127,7 @@ export default function TeamLoginPage() {
                 <p className="text-sm text-gray-600">
                   Don't have a team yet?{" "}
                   <Link href="/auth/team-signup" className="text-black hover:underline">
-                    Register here
+                    Join here
                   </Link>
                 </p>
               </div>
