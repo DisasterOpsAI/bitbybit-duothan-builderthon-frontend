@@ -39,40 +39,48 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       challengeId,
       type: 'buildathon',
       content: githubLink.trim(),
-      status: 'accepted', // Auto-accept for now, could add manual review later
-      submittedAt: new Date(),
-      evaluatedAt: new Date()
+      status: 'pending', // Set to pending for admin review
+      submittedAt: new Date()
     }
 
-    await adminDb.collection('submissions').add(submission)
-
-    // Update team progress
-    const progressDoc = progressQuery.docs[0]
-    await progressDoc.ref.update({
-      buildathonCompleted: true,
-      buildathonCompletedAt: new Date()
-    })
-
-    // Update team total points
+    const submissionRef = await adminDb.collection('submissions').add(submission)
+    
+    // Get team details for notification
+    const teamDoc = await adminDb.collection('teams').doc(teamId).get()
+    const teamData = teamDoc.data()
+    
+    // Get challenge details for notification
     const challengeDoc = await adminDb.collection('challenges').doc(challengeId).get()
     const challengeData = challengeDoc.data()
-    const points = challengeData?.points || 0
-
-    const teamDoc = await adminDb.collection('teams').doc(teamId).get()
-    if (teamDoc.exists) {
-      const currentPoints = teamDoc.data()?.totalPoints || 0
-      const { FieldValue } = await import('firebase-admin/firestore')
-      await teamDoc.ref.update({
-        totalPoints: currentPoints + points,
-        completedChallenges: FieldValue.arrayUnion(challengeId),
-        updatedAt: new Date()
-      })
+    
+    // Create admin notification for buildathon submission
+    const notification = {
+      type: 'buildathon_submission',
+      submissionId: submissionRef.id,
+      teamId,
+      teamName: teamData?.name || 'Unknown Team',
+      challengeId,
+      challengeTitle: challengeData?.title || 'Unknown Challenge',
+      githubLink: githubLink.trim(),
+      submittedAt: new Date(),
+      isRead: false,
+      priority: 'normal'
     }
+    
+    await adminDb.collection('admin_notifications').add(notification)
+
+    // Update team progress to mark buildathon as submitted but not completed
+    const progressDoc = progressQuery.docs[0]
+    await progressDoc.ref.update({
+      buildathonSubmitted: true,
+      buildathonSubmittedAt: new Date()
+    })
 
     return NextResponse.json({
       success: true,
-      message: "Buildathon submission successful! Challenge completed.",
-      pointsEarned: points
+      message: "Buildathon submission successful! Your submission is now under review by the admin team.",
+      submissionId: submissionRef.id,
+      status: 'pending'
     })
   } catch (error) {
     console.error("Buildathon submission error:", error)

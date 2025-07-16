@@ -19,7 +19,7 @@ interface Challenge {
   title: string
   difficulty: "Easy" | "Medium" | "Hard"
   points: number
-  status: "available" | "algorithmic_solved" | "completed"
+  status: "available" | "algorithmic_solved" | "buildathon_submitted" | "completed"
   algorithmic: {
     description: string
     constraints: string
@@ -52,7 +52,7 @@ export default function ChallengePage() {
   const [language, setLanguage] = useState("python")
   const [output, setOutput] = useState("")
   const [isRunning, setIsRunning] = useState(false)
-  const [flagInput, setFlagInput] = useState("")
+  
   const [githubLink, setGithubLink] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState("")
@@ -88,58 +88,77 @@ export default function ChallengePage() {
     try {
       const selectedLang = LANGUAGES.find((l) => l.id === language)
 
-      // TODO: Backend Integration Point 5
       // Execute code using Judge0 API
       const response = await fetch("/api/judge0/execute", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "x-team-id": localStorage.getItem('teamId') || ""
+        },
         body: JSON.stringify({
           source_code: code,
           language_id: selectedLang?.judge0Id,
           stdin: "",
+          expected_output: challenge?.flag,
+          challenge_id: challengeId,
         }),
       })
 
       if (response.ok) {
         const result = await response.json()
-        setOutput(result.stdout || result.stderr || "No output")
+        
+        // Handle compilation errors
+        if (result.compilation_error) {
+          setOutput(result.stderr || "Compilation failed")
+          setError("Compilation Error: Please check your code syntax.")
+          return
+        }
+        
+        // Handle runtime errors
+        if (result.runtime_error) {
+          setOutput(result.stderr || "Runtime error occurred")
+          setError("Runtime Error: Your code encountered an error during execution.")
+          return
+        }
+        
+        // Display output
+        const outputText = result.stdout || result.stderr || "No output"
+        setOutput(outputText)
+        
+        if (result.is_correct) {
+          setSuccess("🎉 Code executed successfully and output matches! Algorithmic challenge solved.")
+          // Automatically submit the flag
+          const { ApiClient } = await import('@/lib/api-client')
+          if (!challenge) {
+            setError("Challenge data not available for flag submission.")
+            return
+          }
+          const submitResponse = await ApiClient.submitFlag(challengeId, challenge.flag)
+
+          if (submitResponse.ok) {
+            setSuccess("✅ Flag accepted! Buildathon challenge unlocked.")
+            setChallenge((prev) => (prev ? { ...prev, status: "algorithmic_solved" } : null))
+          } else {
+            const data = await submitResponse.json()
+            setError(data.error || "Failed to submit flag automatically.")
+          }
+        } else if (result.stdout) {
+          setError("❌ Code executed, but output does not match the expected flag. Try again!")
+        } else if (result.stderr) {
+          setError("⚠️ Code execution failed with errors. Check the output for details.")
+        }
       } else {
-        setError("Failed to execute code")
+        const errorData = await response.json()
+        setError(errorData.error || "Failed to execute code.")
       }
     } catch (err) {
-      setError("Network error during code execution")
+      setError("Network error during code execution or flag submission.")
     } finally {
       setIsRunning(false)
     }
   }
 
-  const submitFlag = async () => {
-    if (!flagInput.trim()) {
-      setError("Please enter the flag")
-      return
-    }
-
-    setIsSubmitting(true)
-    setError("")
-
-    try {
-      const { ApiClient } = await import('@/lib/api-client')
-      const response = await ApiClient.submitFlag(challengeId, flagInput.trim())
-
-      if (response.ok) {
-        setSuccess("Flag accepted! Buildathon challenge unlocked.")
-        setChallenge((prev) => (prev ? { ...prev, status: "algorithmic_solved" } : null))
-        setFlagInput("")
-      } else {
-        const data = await response.json()
-        setError(data.error || "Invalid flag")
-      }
-    } catch (err) {
-      setError("Network error during flag submission")
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  
 
   const submitBuildathon = async () => {
     if (!githubLink.trim()) {
@@ -160,8 +179,9 @@ export default function ChallengePage() {
       const response = await ApiClient.submitBuildathon(challengeId, githubLink.trim())
 
       if (response.ok) {
-        setSuccess("Buildathon submission successful! Challenge completed.")
-        setChallenge((prev) => (prev ? { ...prev, status: "completed" } : null))
+        const data = await response.json()
+        setSuccess("🎉 Buildathon submission successful! Your submission is now under review by the admin team.")
+        setChallenge((prev) => (prev ? { ...prev, status: "buildathon_submitted" } : null))
         setGithubLink("")
       } else {
         const data = await response.json()
@@ -198,6 +218,7 @@ export default function ChallengePage() {
               <p className="text-white/70">
                 {challenge.status === "available" && "Solve the algorithmic challenge to unlock buildathon"}
                 {challenge.status === "algorithmic_solved" && "Algorithmic solved! Complete the buildathon challenge"}
+                {challenge.status === "buildathon_submitted" && "Buildathon submitted! Awaiting admin review"}
                 {challenge.status === "completed" && "Challenge completed successfully"}
               </p>
             </div>
@@ -307,42 +328,7 @@ export default function ChallengePage() {
                   </CardContent>
                 </Card>
 
-                {/* Flag Submission */}
-                {challenge.status === "available" && (
-                  <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
-                    <CardHeader>
-                      <CardTitle className="text-white flex items-center">
-                        <Flag className="w-5 h-5 mr-2 text-yellow-400" />
-                        Submit Flag
-                      </CardTitle>
-                      <CardDescription className="text-white/70">
-                        Enter the correct output as the flag to unlock the buildathon challenge
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <Label htmlFor="flag" className="text-white">
-                          Flag
-                        </Label>
-                        <Input
-                          id="flag"
-                          type="text"
-                          placeholder="Enter your flag here"
-                          value={flagInput}
-                          onChange={(e) => setFlagInput(e.target.value)}
-                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                        />
-                      </div>
-                      <Button
-                        onClick={submitFlag}
-                        className="w-full bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? "Validating..." : "Submit Flag"}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )}
+                
               </div>
 
               {/* Code Editor */}
@@ -450,7 +436,7 @@ export default function ChallengePage() {
                   </CardContent>
                 </Card>
 
-                {challenge.status !== "completed" && (
+                {challenge.status === "algorithmic_solved" && (
                   <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
                     <CardHeader>
                       <CardTitle className="text-white">Submit Your Solution</CardTitle>
@@ -479,6 +465,21 @@ export default function ChallengePage() {
                       >
                         {isSubmitting ? "Submitting..." : "Submit Buildathon Solution"}
                       </Button>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {challenge.status === "buildathon_submitted" && (
+                  <Card className="bg-yellow-500/10 border-yellow-500/30 backdrop-blur-sm">
+                    <CardContent className="pt-6">
+                      <div className="text-center">
+                        <Clock className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+                        <h3 className="text-2xl font-bold text-white mb-2">Submission Under Review</h3>
+                        <p className="text-yellow-300">
+                          Your buildathon submission has been sent to the admin team for review. 
+                          You will be notified once it has been evaluated.
+                        </p>
+                      </div>
                     </CardContent>
                   </Card>
                 )}

@@ -77,8 +77,25 @@ export interface TeamProgress {
   challengeId: string
   algorithmicCompleted: boolean
   buildathonCompleted: boolean
+  buildathonSubmitted?: boolean
   startedAt: Date
   algorithmicCompletedAt?: Date
   buildathonCompletedAt?: Date
+  buildathonSubmittedAt?: Date
   attempts: number
+}
+
+export interface AdminNotification {
+  id: string
+  type: 'buildathon_submission' | 'system_alert' | 'team_registration'
+  submissionId?: string
+  teamId: string
+  teamName: string
+  challengeId?: string
+  challengeTitle?: string
+  githubLink?: string
+  submittedAt: Date
+  isRead: boolean
+  priority: 'low' | 'normal' | 'high'
+  message?: string
 }

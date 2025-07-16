@@ -83,4 +83,22 @@ export class ApiClient {
       body: JSON.stringify(challengeData),
     })
   }
+
+  static async fetchAdminNotifications(unreadOnly = false) {
+    return this.makeAdminRequest(`/api/admin/notifications?unread=${unreadOnly}`)
+  }
+
+  static async markNotificationAsRead(notificationId: string) {
+    return this.makeAdminRequest('/api/admin/notifications', {
+      method: 'PATCH',
+      body: JSON.stringify({ notificationId, isRead: true }),
+    })
+  }
+
+  static async reviewBuildathonSubmission(submissionId: string, action: 'accept' | 'reject', feedback?: string) {
+    return this.makeAdminRequest('/api/admin/submissions/review', {
+      method: 'POST',
+      body: JSON.stringify({ submissionId, action, feedback }),
+    })
+  }
 }
