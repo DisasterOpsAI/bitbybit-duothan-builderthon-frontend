@@ -3,7 +3,7 @@ import { adminDb } from "@/lib/firebase-admin"
 
 export async function POST(request: NextRequest) {
   try {
-    const { submissionId, action, feedback } = await request.json()
+    const { submissionId, action, feedback, points } = await request.json()
     
     // Validate admin authentication
     const adminToken = request.headers.get('Authorization')?.replace('Bearer ', '')
@@ -36,10 +36,10 @@ export async function POST(request: NextRequest) {
     })
 
     if (action === 'accept') {
-      // Get challenge info for points
+      // Use custom points if provided, otherwise use challenge points
       const challengeDoc = await adminDb.collection('challenges').doc(challengeId).get()
       const challengeData = challengeDoc.data()
-      const points = challengeData?.points || 0
+      const pointsToAward = points || challengeData?.points || 0
 
       // Update team progress
       const progressQuery = await adminDb
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         if (!completedChallenges.includes(challengeId)) {
           const { FieldValue } = await import('firebase-admin/firestore')
           await teamDoc.ref.update({
-            totalPoints: currentPoints + points,
+            totalPoints: currentPoints + pointsToAward,
             completedChallenges: FieldValue.arrayUnion(challengeId),
             updatedAt: new Date()
           })
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
 
       // Update submission with points
       await submissionDoc.ref.update({
-        points: points
+        points: pointsToAward
       })
 
       // Create notification for team
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
         type: 'buildathon_accepted',
         teamId,
         challengeId,
-        message: `Your buildathon submission has been accepted! You earned ${points} points.`,
+        message: `Your buildathon submission has been accepted! You earned ${pointsToAward} points.`,
         createdAt: new Date(),
         isRead: false
       }

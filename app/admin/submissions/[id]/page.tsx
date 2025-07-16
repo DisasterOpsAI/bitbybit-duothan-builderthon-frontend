@@ -386,6 +386,28 @@ export default function SubmissionDetailPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="points" className="text-white">
+                        Points to Award
+                      </Label>
+                      <Input
+                        id="points"
+                        type="number"
+                        min="0"
+                        value={customPoints}
+                        onChange={(e) => setCustomPoints(parseInt(e.target.value) || 0)}
+                        className="bg-gray-700 border-gray-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-white">Default Points</Label>
+                      <div className="text-gray-300 bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                        {submission.points}
+                      </div>
+                    </div>
+                  </div>
+                  
                   <div>
                     <Label htmlFor="feedback" className="text-white">
                       Feedback (Optional)
