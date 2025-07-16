@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
 import jwt from "jsonwebtoken"
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic'
+
 // TODO: Backend Integration Point 11 - Delete Challenge
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {

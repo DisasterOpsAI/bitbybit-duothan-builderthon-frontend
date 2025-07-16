@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
 import jwt from "jsonwebtoken"
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic'
+
 // TODO: Backend Integration Point 10 & 12 - Admin Challenge Management
 export async function GET(request: NextRequest) {
   try {

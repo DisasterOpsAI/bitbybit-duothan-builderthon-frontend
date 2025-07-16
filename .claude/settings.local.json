@@ -6,7 +6,8 @@
       "Bash(npx tsc:*)",
       "Bash(wc:*)",
       "Bash(npm view:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
