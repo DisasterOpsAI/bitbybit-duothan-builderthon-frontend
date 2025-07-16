@@ -72,11 +72,11 @@ export default function AdminDashboard() {
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "registration":
-        return <Users className="w-4 h-4 text-blue-400" />
+        return <Users className="w-4 h-4 text-white" />
       case "submission":
-        return <Code className="w-4 h-4 text-yellow-400" />
+        return <Code className="w-4 h-4 text-white" />
       case "completion":
-        return <CheckCircle className="w-4 h-4 text-green-400" />
+        return <CheckCircle className="w-4 h-4 text-white" />
       default:
         return <Activity className="w-4 h-4 text-gray-400" />
     }
@@ -113,17 +113,17 @@ export default function AdminDashboard() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white mb-2">Admin Dashboard</h1>
-            <p className="text-white/70">Monitor and manage the OASIS Protocol platform</p>
+            <p className="text-gray-400">Monitor and manage the OASIS Protocol platform</p>
           </div>
           <div className="flex space-x-4">
             <Link href="/admin/challenges/create">
-              <Button className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700">
+              <Button className="bg-white text-black hover:bg-gray-200">
                 <Plus className="w-4 h-4 mr-2" />
                 New Challenge
               </Button>
             </Link>
             <Link href="/admin/settings">
-              <Button variant="outline" className="text-white border-white/30 hover:bg-white/10 bg-transparent">
+              <Button variant="outline" className="text-white border-gray-600 hover:bg-gray-800 bg-transparent">
                 <Settings className="w-4 h-4 mr-2" />
                 Settings
               </Button>
@@ -133,61 +133,61 @@ export default function AdminDashboard() {
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-white flex items-center text-sm">
-                <Users className="w-4 h-4 mr-2 text-blue-400" />
+                <Users className="w-4 h-4 mr-2 text-white" />
                 Registered Teams
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">{stats.totalTeams}</div>
-              <p className="text-xs text-white/60">Active participants</p>
+              <p className="text-xs text-gray-400">Active participants</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-white flex items-center text-sm">
-                <Code className="w-4 h-4 mr-2 text-green-400" />
+                <Code className="w-4 h-4 mr-2 text-white" />
                 Active Challenges
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">{stats.activeChallenges}</div>
-              <p className="text-xs text-white/60">Available to teams</p>
+              <p className="text-xs text-gray-400">Available to teams</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-white flex items-center text-sm">
-                <Trophy className="w-4 h-4 mr-2 text-yellow-400" />
+                <Trophy className="w-4 h-4 mr-2 text-white" />
                 Total Submissions
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">{stats.totalSubmissions}</div>
-              <p className="text-xs text-white/60">Code & buildathon</p>
+              <p className="text-xs text-gray-400">Code & buildathon</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-white flex items-center text-sm">
-                <CheckCircle className="w-4 h-4 mr-2 text-purple-400" />
+                <CheckCircle className="w-4 h-4 mr-2 text-white" />
                 Completed
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">{stats.completedChallenges}</div>
-              <p className="text-xs text-white/60">Fully solved</p>
+              <p className="text-xs text-gray-400">Fully solved</p>
             </CardContent>
           </Card>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="bg-black/40 border-white/20">
+          <TabsList className="bg-gray-800 border-gray-600">
             <TabsTrigger value="overview" className="text-white">
               Overview
             </TabsTrigger>
@@ -202,32 +202,32 @@ export default function AdminDashboard() {
           <TabsContent value="overview" className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Quick Actions */}
-              <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white">Quick Actions</CardTitle>
-                  <CardDescription className="text-white/70">Common administrative tasks</CardDescription>
+                  <CardDescription className="text-gray-400">Common administrative tasks</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Link href="/admin/challenges">
-                    <Button className="w-full justify-start bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                    <Button className="w-full justify-start bg-white text-black hover:bg-gray-200">
                       <Code className="w-4 h-4 mr-2" />
                       Manage Challenges
                     </Button>
                   </Link>
                   <Link href="/admin/teams">
-                    <Button className="w-full justify-start bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700">
+                    <Button className="w-full justify-start bg-gray-800 text-white hover:bg-gray-700">
                       <Users className="w-4 h-4 mr-2" />
                       View Teams
                     </Button>
                   </Link>
                   <Link href="/admin/submissions">
-                    <Button className="w-full justify-start bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700">
+                    <Button className="w-full justify-start bg-white text-black hover:bg-gray-200">
                       <Trophy className="w-4 h-4 mr-2" />
                       Review Submissions
                     </Button>
                   </Link>
                   <Link href="/admin/analytics">
-                    <Button className="w-full justify-start bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700">
+                    <Button className="w-full justify-start bg-gray-800 text-white hover:bg-gray-700">
                       <BarChart3 className="w-4 h-4 mr-2" />
                       View Analytics
                     </Button>
@@ -236,36 +236,36 @@ export default function AdminDashboard() {
               </Card>
 
               {/* System Status */}
-              <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white">System Status</CardTitle>
-                  <CardDescription className="text-white/70">Platform health and performance</CardDescription>
+                  <CardDescription className="text-gray-400">Platform health and performance</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-white/80">Database</span>
-                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+                    <span className="text-gray-300">Database</span>
+                    <Badge className="bg-white text-black">
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Online
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-white/80">Judge0 API</span>
-                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+                    <span className="text-gray-300">Judge0 API</span>
+                    <Badge className="bg-white text-black">
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Connected
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-white/80">Authentication</span>
-                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+                    <span className="text-gray-300">Authentication</span>
+                    <Badge className="bg-white text-black">
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Active
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-white/80">File Storage</span>
-                    <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30">
+                    <span className="text-gray-300">File Storage</span>
+                    <Badge className="bg-gray-600 text-white">
                       <AlertCircle className="w-3 h-3 mr-1" />
                       Warning
                     </Badge>
@@ -276,15 +276,15 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="activity" className="space-y-4">
-            <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+            <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Recent Activity</CardTitle>
-                <CardDescription className="text-white/70">Latest platform events and team actions</CardDescription>
+                <CardDescription className="text-gray-400">Latest platform events and team actions</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {stats.recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex items-center space-x-4 p-3 bg-black/20 rounded-lg">
+                    <div key={activity.id} className="flex items-center space-x-4 p-3 bg-gray-700 rounded-lg border border-gray-500">
                       {getActivityIcon(activity.type)}
                       <div className="flex-1">
                         <div className="text-white">
@@ -293,7 +293,7 @@ export default function AdminDashboard() {
                           {activity.type === "submission" && ` submitted solution for ${activity.challengeTitle}`}
                           {activity.type === "completion" && ` completed ${activity.challengeTitle}`}
                         </div>
-                        <div className="text-white/60 text-sm flex items-center">
+                        <div className="text-gray-400 text-sm flex items-center">
                           <Clock className="w-3 h-3 mr-1" />
                           {activity.timestamp}
                         </div>
@@ -306,22 +306,22 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="leaderboard" className="space-y-4">
-            <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+            <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Leaderboard Snapshot</CardTitle>
-                <CardDescription className="text-white/70">Current top performing teams</CardDescription>
+                <CardDescription className="text-gray-400">Current top performing teams</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {stats.leaderboardSnapshot.map((entry) => (
-                    <div key={entry.teamName} className="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                    <div key={entry.teamName} className="flex items-center justify-between p-3 bg-gray-700 rounded-lg border border-gray-500">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-black font-bold text-sm">
                           #{entry.rank}
                         </div>
                         <span className="text-white font-semibold">{entry.teamName}</span>
                       </div>
-                      <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30">
+                      <Badge className="bg-gray-600 text-white">
                         {entry.points} pts
                       </Badge>
                     </div>

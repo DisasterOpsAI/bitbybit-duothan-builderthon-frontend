@@ -246,7 +246,7 @@ export default function CreateChallengePage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Create New Challenge</h1>
-          <p className="text-white/70">
+          <p className="text-gray-400">
             Design a comprehensive challenge with algorithmic and buildathon components
           </p>
         </div>
@@ -268,7 +268,7 @@ export default function CreateChallengePage() {
 
         <form onSubmit={handleSubmit}>
           <Tabs defaultValue="basic" className="space-y-6">
-            <TabsList className="bg-black/40 border-white/20">
+            <TabsList className="bg-gray-800 border-gray-600">
               <TabsTrigger value="basic" className="text-white">Basic Info</TabsTrigger>
               <TabsTrigger value="algorithmic" className="text-white">Algorithmic Problem</TabsTrigger>
               <TabsTrigger value="buildathon" className="text-white">Buildathon Problem</TabsTrigger>
@@ -277,10 +277,10 @@ export default function CreateChallengePage() {
 
             {/* Basic Information */}
             <TabsContent value="basic" className="space-y-6">
-              <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white">Challenge Information</CardTitle>
-                  <CardDescription className="text-white/70">
+                  <CardDescription className="text-gray-400">
                     Basic details about your challenge
                   </CardDescription>
                 </CardHeader>
@@ -293,7 +293,7 @@ export default function CreateChallengePage() {
                       placeholder="Enter challenge title"
                       value={challengeData.title}
                       onChange={(e) => setChallengeData(prev => ({ ...prev, title: e.target.value }))}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                      className="bg-gray-700 border-gray-500 text-white placeholder:text-gray-400"
                       required
                     />
                   </div>
@@ -307,10 +307,10 @@ export default function CreateChallengePage() {
                           setChallengeData(prev => ({ ...prev, difficulty: value }))
                         }
                       >
-                        <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                        <SelectTrigger className="bg-gray-700 border-gray-500 text-white">
                           <SelectValue placeholder="Select difficulty" />
                         </SelectTrigger>
-                        <SelectContent className="bg-black/90 border-white/20">
+                        <SelectContent className="bg-gray-900 border-gray-500">
                           <SelectItem value="Easy" className="text-white">Easy</SelectItem>
                           <SelectItem value="Medium" className="text-white">Medium</SelectItem>
                           <SelectItem value="Hard" className="text-white">Hard</SelectItem>
@@ -327,7 +327,7 @@ export default function CreateChallengePage() {
                         placeholder="100"
                         value={challengeData.points}
                         onChange={(e) => setChallengeData(prev => ({ ...prev, points: parseInt(e.target.value) || 0 }))}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                        className="bg-gray-700 border-gray-500 text-white placeholder:text-gray-400"
                         required
                       />
                     </div>
@@ -340,10 +340,10 @@ export default function CreateChallengePage() {
                           setChallengeData(prev => ({ ...prev, status: value }))
                         }
                       >
-                        <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                        <SelectTrigger className="bg-gray-700 border-gray-500 text-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-black/90 border-white/20">
+                        <SelectContent className="bg-gray-900 border-gray-500">
                           <SelectItem value="draft" className="text-white">Draft</SelectItem>
                           <SelectItem value="active" className="text-white">Active</SelectItem>
                         </SelectContent>
@@ -356,10 +356,10 @@ export default function CreateChallengePage() {
 
             {/* Algorithmic Problem */}
             <TabsContent value="algorithmic" className="space-y-6">
-              <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white">Algorithmic Problem</CardTitle>
-                  <CardDescription className="text-white/70">
+                  <CardDescription className="text-gray-400">
                     Define the coding challenge portion
                   </CardDescription>
                 </CardHeader>
@@ -374,7 +374,7 @@ export default function CreateChallengePage() {
                         ...prev,
                         algorithmic: { ...prev.algorithmic, description: e.target.value }
                       }))}
-                      className="w-full min-h-32 bg-white/10 border border-white/20 rounded-md px-3 py-2 text-white placeholder:text-white/50 resize-y"
+                      className="w-full min-h-32 bg-white/10 border border-gray-500 rounded-md px-3 py-2 text-white placeholder:text-gray-400 resize-y"
                       required
                     />
                   </div>
@@ -389,7 +389,7 @@ export default function CreateChallengePage() {
                         ...prev,
                         algorithmic: { ...prev.algorithmic, constraints: e.target.value }
                       }))}
-                      className="w-full min-h-24 bg-white/10 border border-white/20 rounded-md px-3 py-2 text-white placeholder:text-white/50 resize-y"
+                      className="w-full min-h-24 bg-white/10 border border-gray-500 rounded-md px-3 py-2 text-white placeholder:text-gray-400 resize-y"
                     />
                   </div>
 
@@ -405,7 +405,7 @@ export default function CreateChallengePage() {
                           ...prev,
                           algorithmic: { ...prev.algorithmic, timeLimit: e.target.value }
                         }))}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                        className="bg-gray-700 border-gray-500 text-white placeholder:text-gray-400"
                       />
                     </div>
 
@@ -420,7 +420,7 @@ export default function CreateChallengePage() {
                           ...prev,
                           algorithmic: { ...prev.algorithmic, memoryLimit: e.target.value }
                         }))}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                        className="bg-gray-700 border-gray-500 text-white placeholder:text-gray-400"
                       />
                     </div>
                   </div>
@@ -438,7 +438,7 @@ export default function CreateChallengePage() {
                     </div>
 
                     {challengeData.algorithmic.examples.map((example, index) => (
-                      <div key={index} className="border border-white/20 rounded p-4 mb-2">
+                      <div key={index} className="border border-gray-500 rounded p-4 mb-2">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-white font-medium">Example {index + 1}</span>
                           {challengeData.algorithmic.examples.length > 1 && (
@@ -459,7 +459,7 @@ export default function CreateChallengePage() {
                               placeholder="Example input..."
                               value={example.input}
                               onChange={(e) => updateExample(index, 'input', e.target.value)}
-                              className="w-full min-h-20 bg-white/10 border border-white/20 rounded px-3 py-2 text-white placeholder:text-white/50 resize-y"
+                              className="w-full min-h-20 bg-white/10 border border-gray-500 rounded px-3 py-2 text-white placeholder:text-gray-400 resize-y"
                             />
                           </div>
                           
@@ -469,7 +469,7 @@ export default function CreateChallengePage() {
                               placeholder="Expected output..."
                               value={example.output}
                               onChange={(e) => updateExample(index, 'output', e.target.value)}
-                              className="w-full min-h-20 bg-white/10 border border-white/20 rounded px-3 py-2 text-white placeholder:text-white/50 resize-y"
+                              className="w-full min-h-20 bg-white/10 border border-gray-500 rounded px-3 py-2 text-white placeholder:text-gray-400 resize-y"
                             />
                           </div>
                         </div>
@@ -482,10 +482,10 @@ export default function CreateChallengePage() {
 
             {/* Buildathon Problem */}
             <TabsContent value="buildathon" className="space-y-6">
-              <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white">Buildathon Problem</CardTitle>
-                  <CardDescription className="text-white/70">
+                  <CardDescription className="text-gray-400">
                     Define the project building challenge
                   </CardDescription>
                 </CardHeader>
@@ -500,7 +500,7 @@ export default function CreateChallengePage() {
                         ...prev,
                         buildathon: { ...prev.buildathon, description: e.target.value }
                       }))}
-                      className="w-full min-h-32 bg-white/10 border border-white/20 rounded-md px-3 py-2 text-white placeholder:text-white/50 resize-y"
+                      className="w-full min-h-32 bg-white/10 border border-gray-500 rounded-md px-3 py-2 text-white placeholder:text-gray-400 resize-y"
                       required
                     />
                   </div>
@@ -523,7 +523,7 @@ export default function CreateChallengePage() {
                           placeholder="Enter requirement..."
                           value={requirement}
                           onChange={(e) => updateRequirement(index, e.target.value)}
-                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                          className="bg-gray-700 border-gray-500 text-white placeholder:text-gray-400"
                         />
                         {challengeData.buildathon.requirements.length > 1 && (
                           <button
@@ -556,7 +556,7 @@ export default function CreateChallengePage() {
                           placeholder="Enter deliverable..."
                           value={deliverable}
                           onChange={(e) => updateDeliverable(index, e.target.value)}
-                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                          className="bg-gray-700 border-gray-500 text-white placeholder:text-gray-400"
                         />
                         {challengeData.buildathon.deliverables.length > 1 && (
                           <button
@@ -576,10 +576,10 @@ export default function CreateChallengePage() {
 
             {/* Flag & Settings */}
             <TabsContent value="flag" className="space-y-6">
-              <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white">Flag & Final Settings</CardTitle>
-                  <CardDescription className="text-white/70">
+                  <CardDescription className="text-gray-400">
                     Set the challenge flag and finalize settings
                   </CardDescription>
                 </CardHeader>
@@ -592,7 +592,7 @@ export default function CreateChallengePage() {
                       placeholder="flag{example_flag_here}"
                       value={challengeData.flag}
                       onChange={(e) => setChallengeData(prev => ({ ...prev, flag: e.target.value }))}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                      className="bg-gray-700 border-gray-500 text-white placeholder:text-gray-400"
                       required
                     />
                   </div>
@@ -601,7 +601,7 @@ export default function CreateChallengePage() {
                     <button
                       type="button"
                       onClick={() => router.push('/admin/challenges')}
-                      className="px-6 py-2 border border-white/20 text-white rounded hover:bg-white/10"
+                      className="px-6 py-2 border border-gray-500 text-white rounded hover:bg-white/10"
                       disabled={isSubmitting}
                     >
                       Cancel

@@ -57,3 +57,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .oasis-bg {
+    @apply bg-gray-900;
+  }
+}

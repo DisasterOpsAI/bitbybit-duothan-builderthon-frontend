@@ -101,26 +101,26 @@ export default function AdminChallengesPage() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Easy":
-        return "bg-green-500/20 text-green-300 border-green-500/30"
+        return "bg-gray-200 text-black border-gray-300"
       case "Medium":
-        return "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"
+        return "bg-gray-600 text-white border-gray-500"
       case "Hard":
-        return "bg-red-500/20 text-red-300 border-red-500/30"
+        return "bg-gray-800 text-white border-gray-700"
       default:
-        return "bg-gray-500/20 text-gray-300 border-gray-500/30"
+        return "bg-gray-500 text-white border-gray-400"
     }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "bg-green-500/20 text-green-300 border-green-500/30"
+        return "bg-gray-200 text-black border-gray-300"
       case "draft":
-        return "bg-yellow-500/20 text-yellow-300 border-yellow-500/30"
+        return "bg-gray-600 text-white border-gray-500"
       case "archived":
-        return "bg-gray-500/20 text-gray-300 border-gray-500/30"
+        return "bg-gray-800 text-white border-gray-700"
       default:
-        return "bg-gray-500/20 text-gray-300 border-gray-500/30"
+        return "bg-gray-500 text-white border-gray-400"
     }
   }
 
@@ -144,10 +144,10 @@ export default function AdminChallengesPage() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white mb-2">Challenge Management</h1>
-            <p className="text-white/70">Create and manage algorithmic and buildathon challenges</p>
+            <p className="text-gray-400">Create and manage algorithmic and buildathon challenges</p>
           </div>
           <Link href="/admin/challenges/create">
-            <Button className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700">
+            <Button className="bg-white text-black hover:bg-gray-200">
               <Plus className="w-4 h-4 mr-2" />
               Create Challenge
             </Button>
@@ -155,16 +155,16 @@ export default function AdminChallengesPage() {
         </div>
 
         {/* Search and Filters */}
-        <Card className="bg-black/40 border-white/20 backdrop-blur-sm mb-6">
+        <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm mb-6">
           <CardContent className="p-4">
             <div className="flex items-center space-x-4">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
                   placeholder="Search challenges..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                  className="pl-10 bg-gray-700 border-gray-500 text-white placeholder:text-gray-400"
                 />
               </div>
             </div>
@@ -172,20 +172,20 @@ export default function AdminChallengesPage() {
         </Card>
 
         {/* Challenges Table */}
-        <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+        <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-white flex items-center">
               <Code className="w-5 h-5 mr-2" />
               All Challenges ({filteredChallenges.length})
             </CardTitle>
-            <CardDescription className="text-white/70">
+            <CardDescription className="text-gray-400">
               Manage your algorithmic and buildathon challenges
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
-                <TableRow className="border-white/20">
+                <TableRow className="border-gray-600">
                   <TableHead className="text-white">Title</TableHead>
                   <TableHead className="text-white">Difficulty</TableHead>
                   <TableHead className="text-white">Points</TableHead>
@@ -198,7 +198,7 @@ export default function AdminChallengesPage() {
               </TableHeader>
               <TableBody>
                 {filteredChallenges.map((challenge) => (
-                  <TableRow key={challenge.id} className="border-white/20">
+                  <TableRow key={challenge.id} className="border-gray-600">
                     <TableCell className="text-white font-medium">{challenge.title}</TableCell>
                     <TableCell>
                       <Badge className={getDifficultyColor(challenge.difficulty)}>{challenge.difficulty}</Badge>
@@ -209,19 +209,19 @@ export default function AdminChallengesPage() {
                     </TableCell>
                     <TableCell className="text-white">{challenge.submissions}</TableCell>
                     <TableCell className="text-white">{challenge.completions}</TableCell>
-                    <TableCell className="text-white/70">{challenge.createdAt}</TableCell>
+                    <TableCell className="text-gray-400">{challenge.createdAt}</TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0 text-white hover:bg-white/10">
+                          <Button variant="ghost" className="h-8 w-8 p-0 text-white hover:bg-gray-800">
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="bg-black/90 border-white/20">
+                        <DropdownMenuContent className="bg-gray-900 border-gray-500">
                           <DropdownMenuItem asChild>
                             <Link
                               href={`/admin/challenges/${challenge.id}`}
-                              className="text-white hover:bg-white/10 cursor-pointer"
+                              className="text-white hover:bg-gray-800 cursor-pointer"
                             >
                               <Eye className="w-4 h-4 mr-2" />
                               View Details
@@ -230,7 +230,7 @@ export default function AdminChallengesPage() {
                           <DropdownMenuItem asChild>
                             <Link
                               href={`/admin/challenges/${challenge.id}/edit`}
-                              className="text-white hover:bg-white/10 cursor-pointer"
+                              className="text-white hover:bg-gray-800 cursor-pointer"
                             >
                               <Edit className="w-4 h-4 mr-2" />
                               Edit
@@ -239,7 +239,7 @@ export default function AdminChallengesPage() {
                           <DropdownMenuItem asChild>
                             <Link
                               href={`/admin/challenges/${challenge.id}/flag`}
-                              className="text-white hover:bg-white/10 cursor-pointer"
+                              className="text-white hover:bg-gray-800 cursor-pointer"
                             >
                               <Flag className="w-4 h-4 mr-2" />
                               Manage Flag
@@ -249,21 +249,21 @@ export default function AdminChallengesPage() {
                             <AlertDialogTrigger asChild>
                               <DropdownMenuItem
                                 onSelect={(e) => e.preventDefault()}
-                                className="text-red-400 hover:bg-red-500/10"
+                                className="text-red-400 hover:bg-gray-800"
                               >
                                 <Trash2 className="w-4 h-4 mr-2" />
                                 Delete
                               </DropdownMenuItem>
                             </AlertDialogTrigger>
-                            <AlertDialogContent className="bg-black/90 border-white/20">
+                            <AlertDialogContent className="bg-gray-900 border-gray-500">
                               <AlertDialogHeader>
                                 <AlertDialogTitle className="text-white">Delete Challenge</AlertDialogTitle>
-                                <AlertDialogDescription className="text-white/70">
+                                <AlertDialogDescription className="text-gray-400">
                                   Are you sure you want to delete "{challenge.title}"? This action cannot be undone.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel className="text-white border-white/30 hover:bg-white/10">
+                                <AlertDialogCancel className="text-white border-gray-500 hover:bg-gray-700">
                                   Cancel
                                 </AlertDialogCancel>
                                 <AlertDialogAction
@@ -285,14 +285,14 @@ export default function AdminChallengesPage() {
 
             {filteredChallenges.length === 0 && (
               <div className="text-center py-12">
-                <Code className="w-16 h-16 text-white/30 mx-auto mb-4" />
+                <Code className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">No Challenges Found</h3>
-                <p className="text-white/70 mb-6">
+                <p className="text-gray-400 mb-6">
                   {searchTerm ? "No challenges match your search." : "Create your first challenge to get started."}
                 </p>
                 {!searchTerm && (
                   <Link href="/admin/challenges/create">
-                    <Button className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700">
+                    <Button className="bg-white text-black hover:bg-gray-200">
                       <Plus className="w-4 h-4 mr-2" />
                       Create Challenge
                     </Button>
