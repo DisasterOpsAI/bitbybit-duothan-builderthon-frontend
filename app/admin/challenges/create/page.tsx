@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -61,7 +62,30 @@ export default function CreateChallengePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [activeTab, setActiveTab] = useState('basic')
   const router = useRouter()
+
+  const tabs = ['basic', 'algorithmic', 'buildathon', 'flag']
+  const tabNames = {
+    basic: 'Basic Info',
+    algorithmic: 'Algorithmic Problem',
+    buildathon: 'Buildathon Problem',
+    flag: 'Flag & Settings'
+  }
+
+  const nextTab = () => {
+    const currentIndex = tabs.indexOf(activeTab)
+    if (currentIndex < tabs.length - 1) {
+      setActiveTab(tabs[currentIndex + 1])
+    }
+  }
+
+  const prevTab = () => {
+    const currentIndex = tabs.indexOf(activeTab)
+    if (currentIndex > 0) {
+      setActiveTab(tabs[currentIndex - 1])
+    }
+  }
 
   const addExample = () => {
     setChallengeData(prev => ({
@@ -267,7 +291,7 @@ export default function CreateChallengePage() {
         )}
 
         <form onSubmit={handleSubmit}>
-          <Tabs defaultValue="basic" className="space-y-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="bg-gray-800 border-gray-600">
               <TabsTrigger value="basic" className="text-white">Basic Info</TabsTrigger>
               <TabsTrigger value="algorithmic" className="text-white">Algorithmic Problem</TabsTrigger>
@@ -349,6 +373,18 @@ export default function CreateChallengePage() {
                         </SelectContent>
                       </Select>
                     </div>
+                  </div>
+                  
+                  {/* Navigation Buttons */}
+                  <div className="flex justify-between pt-4">
+                    <div></div>
+                    <Button
+                      type="button"
+                      onClick={nextTab}
+                      className="bg-white text-black hover:bg-gray-200"
+                    >
+                      Next: {tabNames.algorithmic}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -476,6 +512,24 @@ export default function CreateChallengePage() {
                       </div>
                     ))}
                   </div>
+                  
+                  {/* Navigation Buttons */}
+                  <div className="flex justify-between pt-4">
+                    <Button
+                      type="button"
+                      onClick={prevTab}
+                      className="bg-gray-800 text-white hover:bg-gray-700"
+                    >
+                      Previous: {tabNames.basic}
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={nextTab}
+                      className="bg-white text-black hover:bg-gray-200"
+                    >
+                      Next: {tabNames.buildathon}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -570,6 +624,24 @@ export default function CreateChallengePage() {
                       </div>
                     ))}
                   </div>
+                  
+                  {/* Navigation Buttons */}
+                  <div className="flex justify-between pt-4">
+                    <Button
+                      type="button"
+                      onClick={prevTab}
+                      className="bg-gray-800 text-white hover:bg-gray-700"
+                    >
+                      Previous: {tabNames.algorithmic}
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={nextTab}
+                      className="bg-white text-black hover:bg-gray-200"
+                    >
+                      Next: {tabNames.flag}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -609,11 +681,24 @@ export default function CreateChallengePage() {
                     
                     <button
                       type="submit"
-                      className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                      className="px-6 py-2 bg-white text-black rounded hover:bg-gray-200 disabled:opacity-50"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? 'Creating...' : 'Create Challenge'}
                     </button>
+                  </div>
+                  
+                  {/* Navigation Buttons */}
+                  <div className="flex justify-between pt-4">
+                    <div></div>
+                    <Button
+                      type="button"
+                      onClick={prevTab}
+                      className="bg-gray-800 text-white hover:bg-gray-700 border-gray-600 px-4 py-2"
+                      style={{ backgroundColor: '#1f2937', color: 'white' }}
+                    >
+                      Previous: {tabNames.buildathon}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

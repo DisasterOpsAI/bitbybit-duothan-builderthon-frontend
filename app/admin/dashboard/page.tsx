@@ -117,7 +117,7 @@ export default function AdminDashboard() {
           </div>
           <div className="flex space-x-4">
             <Link href="/admin/challenges/create">
-              <Button className="bg-white text-black hover:bg-gray-200">
+              <Button className="bg-transparent text-white border-gray-600 hover:bg-gray-800">
                 <Plus className="w-4 h-4 mr-2" />
                 New Challenge
               </Button>
@@ -209,25 +209,25 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Link href="/admin/challenges">
-                    <Button className="w-full justify-start bg-white text-black hover:bg-gray-200">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-white border-gray-600 hover:bg-gray-800">
                       <Code className="w-4 h-4 mr-2" />
                       Manage Challenges
                     </Button>
                   </Link>
                   <Link href="/admin/teams">
-                    <Button className="w-full justify-start bg-gray-800 text-white hover:bg-gray-700">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-white border-gray-600 hover:bg-gray-800">
                       <Users className="w-4 h-4 mr-2" />
                       View Teams
                     </Button>
                   </Link>
                   <Link href="/admin/submissions">
-                    <Button className="w-full justify-start bg-white text-black hover:bg-gray-200">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-white border-gray-600 hover:bg-gray-800">
                       <Trophy className="w-4 h-4 mr-2" />
                       Review Submissions
                     </Button>
                   </Link>
                   <Link href="/admin/analytics">
-                    <Button className="w-full justify-start bg-gray-800 text-white hover:bg-gray-700">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-white border-gray-600 hover:bg-gray-800">
                       <BarChart3 className="w-4 h-4 mr-2" />
                       View Analytics
                     </Button>
