@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/auth-middleware"
-import { adminDb } from "@/lib/firebase-admin"
+import { adminChallengesCRUD, adminSubmissionsCRUD } from "@/lib/firestore-crud"
 import { Challenge } from "@/lib/database-schema"
 
 // Force dynamic rendering for this route
@@ -8,25 +8,21 @@ export const dynamic = 'force-dynamic'
 
 export const GET = requireAdmin(async (request: NextRequest) => {
   try {
-    const challengesSnapshot = await adminDb.collection('challenges').orderBy('createdAt', 'desc').get()
+    const challengesData = await adminChallengesCRUD.getAll()
     
     const challenges = []
-    for (const doc of challengesSnapshot.docs) {
-      const challengeData = doc.data()
+    for (const challengeData of challengesData) {
       
       // Get submission stats
-      const submissionsSnapshot = await adminDb
-        .collection('submissions')
-        .where('challengeId', '==', doc.id)
-        .get()
+      const submissions = await adminSubmissionsCRUD.getByChallengeId(challengeData.id)
       
-      const totalSubmissions = submissionsSnapshot.size
-      const completions = submissionsSnapshot.docs.filter(doc => 
-        doc.data().status === 'accepted' && doc.data().type === 'buildathon'
+      const totalSubmissions = submissions.length
+      const completions = submissions.filter(submission => 
+        submission.status === 'accepted' && submission.type === 'buildathon'
       ).length
 
       challenges.push({
-        id: doc.id,
+        id: challengeData.id,
         title: challengeData.title,
         difficulty: getDifficultyFromPoints(challengeData.points),
         points: challengeData.points,

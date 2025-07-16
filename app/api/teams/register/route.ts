@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { adminDb } from '@/lib/firebase-admin'
+import { adminTeamsCRUD } from '@/lib/firestore-crud'
 import { Team } from '@/lib/database-schema'
 
 export async function POST(request: NextRequest) {
@@ -11,46 +11,39 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if team name already exists
-    const existingTeamName = await adminDb
-      .collection('teams')
-      .where('name', '==', teamName.trim())
-      .get()
+    const existingTeamName = await adminTeamsCRUD.getByName(teamName.trim())
 
-    if (!existingTeamName.empty) {
+    if (existingTeamName) {
       return NextResponse.json({ error: 'Team name already exists' }, { status: 409 })
     }
 
     // If we have auth info, check if user already has a team
     if (authId) {
-      const existingTeam = await adminDb
-        .collection('teams')
-        .where('authId', '==', authId)
-        .get()
+      const existingTeam = await adminTeamsCRUD.getByAuthId(authId)
 
-      if (!existingTeam.empty) {
+      if (existingTeam) {
         return NextResponse.json({ error: 'User already has a team' }, { status: 409 })
       }
     }
 
     // Create new team if all auth info is provided
     if (email && authProvider && authId) {
-      const newTeam: Omit<Team, 'id'> = {
+      const newTeam: Omit<Team, 'id' | 'createdAt' | 'updatedAt'> = {
         name: teamName.trim(),
         email,
         authProvider,
         authId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
         totalPoints: 0,
         completedChallenges: []
       }
 
-      const docRef = await adminDb.collection('teams').add(newTeam)
+      const teamId = await adminTeamsCRUD.create(newTeam)
+      const createdTeam = await adminTeamsCRUD.getById(teamId)
       
       return NextResponse.json({ 
         success: true, 
-        teamId: docRef.id,
-        team: { id: docRef.id, ...newTeam }
+        teamId,
+        team: createdTeam
       })
     }
 

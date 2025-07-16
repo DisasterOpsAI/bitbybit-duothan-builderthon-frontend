@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { adminDb } from "@/lib/firebase-admin"
+import { adminChallengesCRUD } from "@/lib/firestore-crud"
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -7,13 +7,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const teamId = request.headers.get('x-team-id') // We'll set this from the frontend
 
     // Get challenge from Firebase
-    const challengeDoc = await adminDb.collection('challenges').doc(challengeId).get()
+    const challengeData = await adminChallengesCRUD.getById(challengeId)
     
-    if (!challengeDoc.exists) {
+    if (!challengeData) {
       return NextResponse.json({ error: "Challenge not found" }, { status: 404 })
     }
-
-    const challengeData = challengeDoc.data()
     
     if (!challengeData?.isActive) {
       return NextResponse.json({ error: "Challenge is not active" }, { status: 403 })

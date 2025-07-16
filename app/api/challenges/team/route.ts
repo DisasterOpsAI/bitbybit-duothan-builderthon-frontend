@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { adminChallengesCRUD } from "@/lib/firestore-crud"
 import { adminDb } from "@/lib/firebase-admin"
 
 export async function GET(request: NextRequest) {
@@ -10,16 +11,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Get all active challenges
-    const challengesSnapshot = await adminDb
-      .collection('challenges')
-      .where('isActive', '==', true)
-      .orderBy('order')
-      .get()
+    const challengesData = await adminChallengesCRUD.getActive()
 
     const challenges = []
     
-    for (const challengeDoc of challengesSnapshot.docs) {
-      const challengeData = challengeDoc.data()
+    for (const challengeData of challengesData) {
       
       // Check team progress for this challenge
       let status = "available"
@@ -39,7 +35,7 @@ export async function GET(request: NextRequest) {
       }
 
       challenges.push({
-        id: challengeDoc.id,
+        id: challengeData.id,
         title: challengeData.title,
         difficulty: getDifficultyFromPoints(challengeData.points),
         status,
