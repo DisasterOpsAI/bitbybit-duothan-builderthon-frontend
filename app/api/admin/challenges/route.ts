@@ -85,26 +85,23 @@ export const POST = requireAdmin(async (request: NextRequest) => {
     }
 
     // Create new challenge
-    const newChallenge: Omit<Challenge, "id"> = {
+    const newChallenge: Omit<Challenge, 'id' | 'createdAt' | 'updatedAt'> = {
       title: challengeData.title,
       description: challengeData.description || "",
       points: challengeData.points || 100,
       order: challengeData.order || 0,
       isActive: challengeData.isActive || false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
       algorithmicProblem: challengeData.algorithmicProblem,
       buildathonProblem: challengeData.buildathonProblem,
       flag: challengeData.flag,
     };
 
-    // Use adminDb (now properly imported)
-    const docRef = await adminDb.collection("challenges").add(newChallenge);
+    const challengeId = await adminChallengesCRUD.create(newChallenge);
 
     return NextResponse.json({
       success: true,
       message: "Challenge created successfully",
-      id: docRef.id,
+      id: challengeId,
     });
   } catch (error) {
     console.error("Failed to create challenge:", error);
