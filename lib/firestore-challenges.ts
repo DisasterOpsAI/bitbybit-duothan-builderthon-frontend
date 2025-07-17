@@ -13,7 +13,7 @@ import {
   Timestamp
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { adminDb } from './firebase-admin';
+import { adminDb, adminInitialized } from './firebase-admin';
 import { Challenge } from './database-schema';
 
 const CHALLENGES_COLLECTION = 'challenges';
@@ -157,6 +157,10 @@ export const challengesCRUD = {
 export const adminChallengesCRUD = {
   // Create a new challenge
   async create(challengeData: Omit<Challenge, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const docRef = await adminDb.collection(CHALLENGES_COLLECTION).add({
         ...challengeData,
@@ -172,6 +176,10 @@ export const adminChallengesCRUD = {
 
   // Read all challenges
   async getAll(): Promise<Challenge[]> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const snapshot = await adminDb
         .collection(CHALLENGES_COLLECTION)
@@ -192,6 +200,10 @@ export const adminChallengesCRUD = {
 
   // Read active challenges only
   async getActive(): Promise<Challenge[]> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       console.log('Fetching active challenges from Firestore...');
       const snapshot = await adminDb
