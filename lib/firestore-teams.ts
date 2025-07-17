@@ -14,7 +14,7 @@ import {
   increment
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { adminDb } from './firebase-admin';
+import { adminDb, adminInitialized } from './firebase-admin';
 import { Team } from './database-schema';
 
 const TEAMS_COLLECTION = 'teams';
@@ -236,6 +236,10 @@ export const teamsCRUD = {
 export const adminTeamsCRUD = {
   // Create a new team
   async create(teamData: Omit<Team, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const docRef = await adminDb.collection(TEAMS_COLLECTION).add({
         ...teamData,
@@ -251,6 +255,10 @@ export const adminTeamsCRUD = {
 
   // Read all teams
   async getAll(): Promise<Team[]> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const snapshot = await adminDb
         .collection(TEAMS_COLLECTION)
@@ -271,6 +279,10 @@ export const adminTeamsCRUD = {
 
   // Read a single team by ID
   async getById(id: string): Promise<Team | null> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const doc = await adminDb.collection(TEAMS_COLLECTION).doc(id).get();
       
@@ -291,6 +303,10 @@ export const adminTeamsCRUD = {
 
   // Read team by email
   async getByEmail(email: string): Promise<Team | null> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const snapshot = await adminDb
         .collection(TEAMS_COLLECTION)
@@ -316,6 +332,10 @@ export const adminTeamsCRUD = {
 
   // Read team by name
   async getByName(name: string): Promise<Team | null> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const snapshot = await adminDb
         .collection(TEAMS_COLLECTION)
@@ -341,6 +361,10 @@ export const adminTeamsCRUD = {
 
   // Read team by auth ID
   async getByAuthId(authId: string): Promise<Team | null> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const snapshot = await adminDb
         .collection(TEAMS_COLLECTION)
@@ -366,6 +390,10 @@ export const adminTeamsCRUD = {
 
   // Update a team
   async update(id: string, updateData: Partial<Omit<Team, 'id' | 'createdAt'>>): Promise<void> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       await adminDb.collection(TEAMS_COLLECTION).doc(id).update({
         ...updateData,
@@ -379,6 +407,10 @@ export const adminTeamsCRUD = {
 
   // Delete a team
   async delete(id: string): Promise<void> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       await adminDb.collection(TEAMS_COLLECTION).doc(id).delete();
     } catch (error) {
@@ -389,6 +421,10 @@ export const adminTeamsCRUD = {
 
   // Update team points
   async updatePoints(id: string, points: number): Promise<void> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const docRef = adminDb.collection(TEAMS_COLLECTION).doc(id);
       await docRef.update({
@@ -420,6 +456,10 @@ export const adminTeamsCRUD = {
 
   // Get leaderboard (teams ordered by points)
   async getLeaderboard(limitCount: number = 10): Promise<Team[]> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const snapshot = await adminDb
         .collection(TEAMS_COLLECTION)
@@ -446,6 +486,10 @@ export const adminTeamsCRUD = {
     averagePoints: number;
     teamsWithChallenges: number;
   }> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const snapshot = await adminDb.collection(TEAMS_COLLECTION).get();
       const teams = snapshot.docs.map((doc: any) => doc.data()) as Team[];
@@ -471,6 +515,10 @@ export const adminTeamsCRUD = {
 
   // Batch update teams
   async batchUpdate(updates: Array<{ id: string; data: Partial<Omit<Team, 'id' | 'createdAt'>> }>): Promise<void> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const batch = adminDb.batch();
       

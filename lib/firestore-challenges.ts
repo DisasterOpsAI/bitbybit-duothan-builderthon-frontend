@@ -233,6 +233,10 @@ export const adminChallengesCRUD = {
 
   // Read a single challenge by ID
   async getById(id: string): Promise<Challenge | null> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const doc = await adminDb.collection(CHALLENGES_COLLECTION).doc(id).get();
       
@@ -253,6 +257,10 @@ export const adminChallengesCRUD = {
 
   // Update a challenge
   async update(id: string, updateData: Partial<Omit<Challenge, 'id' | 'createdAt'>>): Promise<void> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       await adminDb.collection(CHALLENGES_COLLECTION).doc(id).update({
         ...updateData,
@@ -266,6 +274,10 @@ export const adminChallengesCRUD = {
 
   // Delete a challenge
   async delete(id: string): Promise<void> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       await adminDb.collection(CHALLENGES_COLLECTION).doc(id).delete();
     } catch (error) {
@@ -276,6 +288,10 @@ export const adminChallengesCRUD = {
 
   // Batch update challenges
   async batchUpdate(updates: Array<{ id: string; data: Partial<Omit<Challenge, 'id' | 'createdAt'>> }>): Promise<void> {
+    if (!adminInitialized || !adminDb) {
+      throw new Error('Firebase Admin not initialized. Cannot perform admin operations.');
+    }
+    
     try {
       const batch = adminDb.batch();
       

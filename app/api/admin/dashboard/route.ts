@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/auth-middleware"
-import { adminDb } from "@/lib/firebase-admin"
+import { adminDb, adminInitialized } from "@/lib/firebase-admin"
 
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic'
 
 export const GET = requireAdmin(async (request: NextRequest) => {
   try {
+    // Check if Firebase Admin is initialized
+    if (!adminInitialized || !adminDb) {
+      console.error('Firebase Admin not initialized in dashboard route');
+      return NextResponse.json({ 
+        error: "Firebase Admin not initialized. Cannot fetch dashboard data." 
+      }, { status: 500 });
+    }
+
     // Fetch real-time statistics from Firebase
     const [teamsSnapshot, challengesSnapshot, submissionsSnapshot] = await Promise.all([
       adminDb.collection('teams').get(),
@@ -88,7 +96,18 @@ export const GET = requireAdmin(async (request: NextRequest) => {
     return NextResponse.json(dashboardStats)
   } catch (error) {
     console.error("Failed to fetch admin dashboard stats:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    
+    // Better error handling
+    let errorMessage = "Unknown error occurred";
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      errorMessage = error.message;
+    }
+
+    return NextResponse.json({ 
+      error: "Internal server error",
+      message: process.env.NODE_ENV === "development" ? errorMessage : "Something went wrong"
+    }, { status: 500 })
   }
 })
 
