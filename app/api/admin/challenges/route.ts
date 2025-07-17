@@ -39,7 +39,7 @@ export const GET = requireAdmin(async (request: NextRequest) => {
         createdAt:
           challengeData.createdAt instanceof Date
             ? challengeData.createdAt.toISOString().split("T")[0]
-            : challengeData.createdAt.toDate().toISOString().split("T")[0],
+            : challengeData.createdAt?.toDate?.()?.toISOString?.().split("T")[0] || new Date().toISOString().split("T")[0],
       });
     }
 

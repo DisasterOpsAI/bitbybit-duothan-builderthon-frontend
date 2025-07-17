@@ -53,8 +53,6 @@ export default function AdminChallengesPage() {
 
   const fetchChallenges = async () => {
     try {
-      // TODO: Backend Integration Point 10
-      // Fetch all challenges for admin
       const response = await fetch("/api/admin/challenges", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
@@ -67,6 +65,8 @@ export default function AdminChallengesPage() {
       } else if (response.status === 401) {
         localStorage.removeItem("adminToken")
         router.push("/auth/admin-login")
+      } else {
+        console.error("Failed to fetch challenges:", response.status)
       }
     } catch (error) {
       console.error("Failed to fetch challenges:", error)
