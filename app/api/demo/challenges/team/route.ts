@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 import { demoApi } from "@/lib/demo-data"
 
+// Force dynamic rendering for this route
+export const dynamic = "force-dynamic"
+
 export async function GET(request: NextRequest) {
   try {
     // In demo mode, use a default team ID
