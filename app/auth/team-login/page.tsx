@@ -57,17 +57,17 @@ export default function TeamLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="border-b border-gray-200">
+    <div className="min-h-screen bg-background">
+      <nav className="border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
-            <Code className="w-8 h-8 text-black" />
-            <span className="text-xl font-bold text-black">OASIS Protocol</span>
+            <Code className="w-8 h-8 text-foreground" />
+            <span className="text-xl font-bold text-foreground">OASIS Protocol</span>
           </Link>
           <Link href="/auth/team-signup">
             <Button
               variant="outline"
-              className="border-black text-black hover:bg-black hover:text-white bg-transparent"
+              className="border-border text-foreground hover:bg-foreground hover:text-background bg-transparent"
             >
               New Team? Join Here
             </Button>
@@ -78,30 +78,30 @@ export default function TeamLoginPage() {
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-black mb-2">Team Login</h1>
-            <p className="text-gray-600">Access your team's challenge portal</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Team Login</h1>
+            <p className="text-muted-foreground">Access your team's challenge portal</p>
           </div>
 
-          <Card className="border-gray-200">
+          <Card className="border-border">
             <CardHeader>
-              <CardTitle className="text-black flex items-center justify-center">
+              <CardTitle className="text-foreground flex items-center justify-center">
                 <LogIn className="w-5 h-5 mr-2" />
                 Team Authentication
               </CardTitle>
-              <CardDescription className="text-gray-600 text-center">
+              <CardDescription className="text-muted-foreground text-center">
                 Enter your team name and authenticate to continue
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {error && (
-                <Alert className="border-red-200 bg-red-50">
-                  <AlertCircle className="h-4 w-4 text-red-600" />
-                  <AlertDescription className="text-red-700">{error}</AlertDescription>
+                <Alert className="border-destructive bg-destructive/10">
+                  <AlertCircle className="h-4 w-4 text-destructive" />
+                  <AlertDescription className="text-destructive">{error}</AlertDescription>
                 </Alert>
               )}
 
               <div>
-                <Label htmlFor="teamName" className="text-black">
+                <Label htmlFor="teamName" className="text-foreground">
                   Team Name
                 </Label>
                 <Input
@@ -110,23 +110,23 @@ export default function TeamLoginPage() {
                   placeholder="Enter your team name"
                   value={teamName}
                   onChange={(e) => setTeamName(e.target.value)}
-                  className="border-gray-300"
+                  className="border-border"
                   disabled={isLoading}
                 />
               </div>
 
               <Button
                 onClick={handleGoogleSignIn}
-                className="w-full bg-black text-white hover:bg-gray-800"
+                className="w-full accent-button"
                 disabled={isLoading || !teamName.trim()}
               >
                 {isLoading ? "Authenticating..." : "Continue with Google"}
               </Button>
 
               <div className="text-center">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   Don't have a team yet?{" "}
-                  <Link href="/auth/team-signup" className="text-black hover:underline">
+                  <Link href="/auth/team-signup" className="text-accent hover:underline">
                     Join here
                   </Link>
                 </p>

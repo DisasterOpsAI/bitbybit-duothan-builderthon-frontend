@@ -72,22 +72,22 @@ export default function AdminDashboard() {
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "registration":
-        return <Users className="w-4 h-4 text-white" />
+        return <Users className="w-4 h-4 text-foreground" />
       case "submission":
-        return <Code className="w-4 h-4 text-white" />
+        return <Code className="w-4 h-4 text-foreground" />
       case "completion":
-        return <CheckCircle className="w-4 h-4 text-white" />
+        return <CheckCircle className="w-4 h-4 text-foreground" />
       default:
-        return <Activity className="w-4 h-4 text-gray-400" />
+        return <Activity className="w-4 h-4 text-muted-foreground" />
     }
   }
 
   if (isLoading) {
     return (
-      <div className="min-h-screen oasis-bg">
+      <div className="min-h-screen bg-background">
         <AdminNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
-          <div className="text-white text-xl">Loading dashboard...</div>
+          <div className="text-foreground text-xl">Loading dashboard...</div>
         </div>
       </div>
     )
@@ -95,35 +95,35 @@ export default function AdminDashboard() {
 
   if (!stats) {
     return (
-      <div className="min-h-screen oasis-bg">
+      <div className="min-h-screen bg-background">
         <AdminNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
-          <div className="text-white text-xl">Failed to load dashboard</div>
+          <div className="text-foreground text-xl">Failed to load dashboard</div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen oasis-bg">
+    <div className="min-h-screen bg-background">
       <AdminNavbar />
 
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Admin Dashboard</h1>
-            <p className="text-gray-400">Monitor and manage the OASIS Protocol platform</p>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Admin Dashboard</h1>
+            <p className="text-muted-foreground">Monitor and manage the OASIS Protocol platform</p>
           </div>
           <div className="flex space-x-4">
             <Link href="/admin/challenges/create">
-              <Button className="bg-transparent text-white border-gray-600 hover:bg-gray-800">
+              <Button className="accent-button">
                 <Plus className="w-4 h-4 mr-2" />
                 New Challenge
               </Button>
             </Link>
             <Link href="/admin/settings">
-              <Button variant="outline" className="text-white border-gray-600 hover:bg-gray-800 bg-transparent">
+              <Button variant="outline" className="text-foreground border-border hover:bg-secondary">
                 <Settings className="w-4 h-4 mr-2" />
                 Settings
               </Button>
@@ -133,68 +133,68 @@ export default function AdminDashboard() {
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+          <Card className="surface-elevated">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
-                <Users className="w-4 h-4 mr-2 text-white" />
+              <CardTitle className="text-foreground flex items-center text-sm">
+                <Users className="w-4 h-4 mr-2 text-foreground" />
                 Registered Teams
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.totalTeams}</div>
-              <p className="text-xs text-gray-400">Active participants</p>
+              <div className="text-2xl font-bold text-foreground">{stats.totalTeams}</div>
+              <p className="text-xs text-muted-foreground">Active participants</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+          <Card className="surface-elevated">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
-                <Code className="w-4 h-4 mr-2 text-white" />
+              <CardTitle className="text-foreground flex items-center text-sm">
+                <Code className="w-4 h-4 mr-2 text-foreground" />
                 Active Challenges
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.activeChallenges}</div>
-              <p className="text-xs text-gray-400">Available to teams</p>
+              <div className="text-2xl font-bold text-foreground">{stats.activeChallenges}</div>
+              <p className="text-xs text-muted-foreground">Available to teams</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+          <Card className="surface-elevated">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
-                <Trophy className="w-4 h-4 mr-2 text-white" />
+              <CardTitle className="text-foreground flex items-center text-sm">
+                <Trophy className="w-4 h-4 mr-2 text-foreground" />
                 Total Submissions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.totalSubmissions}</div>
-              <p className="text-xs text-gray-400">Code & buildathon</p>
+              <div className="text-2xl font-bold text-foreground">{stats.totalSubmissions}</div>
+              <p className="text-xs text-muted-foreground">Code & buildathon</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+          <Card className="surface-elevated">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
-                <CheckCircle className="w-4 h-4 mr-2 text-white" />
+              <CardTitle className="text-foreground flex items-center text-sm">
+                <CheckCircle className="w-4 h-4 mr-2 text-foreground" />
                 Completed
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.completedChallenges}</div>
-              <p className="text-xs text-gray-400">Fully solved</p>
+              <div className="text-2xl font-bold text-foreground">{stats.completedChallenges}</div>
+              <p className="text-xs text-muted-foreground">Fully solved</p>
             </CardContent>
           </Card>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="bg-gray-800 border-gray-600">
-            <TabsTrigger value="overview" className="text-white">
+          <TabsList className="bg-secondary border-border">
+            <TabsTrigger value="overview" className="text-foreground">
               Overview
             </TabsTrigger>
-            <TabsTrigger value="activity" className="text-white">
+            <TabsTrigger value="activity" className="text-foreground">
               Recent Activity
             </TabsTrigger>
-            <TabsTrigger value="leaderboard" className="text-white">
+            <TabsTrigger value="leaderboard" className="text-foreground">
               Leaderboard
             </TabsTrigger>
           </TabsList>
@@ -202,32 +202,32 @@ export default function AdminDashboard() {
           <TabsContent value="overview" className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Quick Actions */}
-              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+              <Card className="surface-elevated">
                 <CardHeader>
-                  <CardTitle className="text-white">Quick Actions</CardTitle>
-                  <CardDescription className="text-gray-400">Common administrative tasks</CardDescription>
+                  <CardTitle className="text-foreground">Quick Actions</CardTitle>
+                  <CardDescription className="text-muted-foreground">Common administrative tasks</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Link href="/admin/challenges">
-                    <Button variant="outline" className="w-full justify-start bg-transparent text-white border-gray-600 hover:bg-gray-800">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-secondary">
                       <Code className="w-4 h-4 mr-2" />
                       Manage Challenges
                     </Button>
                   </Link>
                   <Link href="/admin/teams">
-                    <Button variant="outline" className="w-full justify-start bg-transparent text-white border-gray-600 hover:bg-gray-800">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-secondary">
                       <Users className="w-4 h-4 mr-2" />
                       View Teams
                     </Button>
                   </Link>
                   <Link href="/admin/submissions">
-                    <Button variant="outline" className="w-full justify-start bg-transparent text-white border-gray-600 hover:bg-gray-800">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-secondary">
                       <Trophy className="w-4 h-4 mr-2" />
                       Review Submissions
                     </Button>
                   </Link>
                   <Link href="/admin/analytics">
-                    <Button variant="outline" className="w-full justify-start bg-transparent text-white border-gray-600 hover:bg-gray-800">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-secondary">
                       <BarChart3 className="w-4 h-4 mr-2" />
                       View Analytics
                     </Button>
@@ -236,36 +236,36 @@ export default function AdminDashboard() {
               </Card>
 
               {/* System Status */}
-              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+              <Card className="surface-elevated">
                 <CardHeader>
-                  <CardTitle className="text-white">System Status</CardTitle>
-                  <CardDescription className="text-gray-400">Platform health and performance</CardDescription>
+                  <CardTitle className="text-foreground">System Status</CardTitle>
+                  <CardDescription className="text-muted-foreground">Platform health and performance</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-300">Database</span>
-                    <Badge className="bg-white text-black">
+                    <span className="text-muted-foreground">Database</span>
+                    <Badge className="bg-accent text-accent-foreground">
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Online
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-300">Judge0 API</span>
-                    <Badge className="bg-white text-black">
+                    <span className="text-muted-foreground">Judge0 API</span>
+                    <Badge className="bg-accent text-accent-foreground">
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Connected
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-300">Authentication</span>
-                    <Badge className="bg-white text-black">
+                    <span className="text-muted-foreground">Authentication</span>
+                    <Badge className="bg-accent text-accent-foreground">
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Active
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-300">File Storage</span>
-                    <Badge className="bg-gray-600 text-white">
+                    <span className="text-muted-foreground">File Storage</span>
+                    <Badge className="bg-destructive text-destructive-foreground">
                       <AlertCircle className="w-3 h-3 mr-1" />
                       Warning
                     </Badge>
@@ -276,24 +276,24 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="activity" className="space-y-4">
-            <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+            <Card className="surface-elevated">
               <CardHeader>
-                <CardTitle className="text-white">Recent Activity</CardTitle>
-                <CardDescription className="text-gray-400">Latest platform events and team actions</CardDescription>
+                <CardTitle className="text-foreground">Recent Activity</CardTitle>
+                <CardDescription className="text-muted-foreground">Latest platform events and team actions</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {stats.recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex items-center space-x-4 p-3 bg-gray-700 rounded-lg border border-gray-500">
+                    <div key={activity.id} className="flex items-center space-x-4 p-3 bg-secondary rounded-lg border border-border">
                       {getActivityIcon(activity.type)}
                       <div className="flex-1">
-                        <div className="text-white">
+                        <div className="text-foreground">
                           <span className="font-semibold">{activity.teamName}</span>
                           {activity.type === "registration" && " registered for the challenge"}
                           {activity.type === "submission" && ` submitted solution for ${activity.challengeTitle}`}
                           {activity.type === "completion" && ` completed ${activity.challengeTitle}`}
                         </div>
-                        <div className="text-gray-400 text-sm flex items-center">
+                        <div className="text-muted-foreground text-sm flex items-center">
                           <Clock className="w-3 h-3 mr-1" />
                           {activity.timestamp}
                         </div>
@@ -306,22 +306,22 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="leaderboard" className="space-y-4">
-            <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+            <Card className="surface-elevated">
               <CardHeader>
-                <CardTitle className="text-white">Leaderboard Snapshot</CardTitle>
-                <CardDescription className="text-gray-400">Current top performing teams</CardDescription>
+                <CardTitle className="text-foreground">Leaderboard Snapshot</CardTitle>
+                <CardDescription className="text-muted-foreground">Current top performing teams</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {stats.leaderboardSnapshot.map((entry) => (
-                    <div key={entry.teamName} className="flex items-center justify-between p-3 bg-gray-700 rounded-lg border border-gray-500">
+                    <div key={entry.teamName} className="flex items-center justify-between p-3 bg-secondary rounded-lg border border-border">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-black font-bold text-sm">
+                        <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-bold text-sm">
                           #{entry.rank}
                         </div>
-                        <span className="text-white font-semibold">{entry.teamName}</span>
+                        <span className="text-foreground font-semibold">{entry.teamName}</span>
                       </div>
-                      <Badge className="bg-gray-600 text-white">
+                      <Badge className="bg-muted text-muted-foreground">
                         {entry.points} pts
                       </Badge>
                     </div>

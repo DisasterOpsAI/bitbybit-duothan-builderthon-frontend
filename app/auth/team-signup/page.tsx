@@ -60,17 +60,17 @@ export default function TeamSignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="border-b border-gray-200">
+    <div className="min-h-screen bg-background">
+      <nav className="border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
-            <Code className="w-8 h-8 text-black" />
-            <span className="text-xl font-bold text-black">OASIS Protocol</span>
+            <Code className="w-8 h-8 text-foreground" />
+            <span className="text-xl font-bold text-foreground">OASIS Protocol</span>
           </Link>
           <Link href="/auth/team-login">
             <Button
               variant="outline"
-              className="border-black text-black hover:bg-black hover:text-white bg-transparent"
+              className="border-border text-foreground hover:bg-foreground hover:text-background bg-transparent"
             >
               Already have a team? Sign In
             </Button>
@@ -81,38 +81,38 @@ export default function TeamSignupPage() {
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-black mb-2">Form Your Team</h1>
-            <p className="text-gray-600">Register your team to begin the challenge</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Form Your Team</h1>
+            <p className="text-muted-foreground">Register your team to begin the challenge</p>
           </div>
 
-          <Card className="border-gray-200">
+          <Card className="border-border">
             <CardHeader>
-              <CardTitle className="text-black flex items-center">
+              <CardTitle className="text-foreground flex items-center">
                 <Users className="w-5 h-5 mr-2" />
                 Team Registration
               </CardTitle>
-              <CardDescription className="text-gray-600">
+              <CardDescription className="text-muted-foreground">
                 Enter your team name and sign in with Google to access challenges
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {error && (
-                <Alert className="border-red-200 bg-red-50">
-                  <AlertCircle className="h-4 w-4 text-red-600" />
-                  <AlertDescription className="text-red-700">{error}</AlertDescription>
+                <Alert className="border-destructive bg-destructive/10">
+                  <AlertCircle className="h-4 w-4 text-destructive" />
+                  <AlertDescription className="text-destructive">{error}</AlertDescription>
                 </Alert>
               )}
 
               {success && (
-                <Alert className="border-green-200 bg-green-50">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  <AlertDescription className="text-green-700">{success}</AlertDescription>
+                <Alert className="border-accent bg-accent/10">
+                  <CheckCircle className="h-4 w-4 text-accent" />
+                  <AlertDescription className="text-accent">{success}</AlertDescription>
                 </Alert>
               )}
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="teamName" className="text-black">
+                  <Label htmlFor="teamName" className="text-foreground">
                     Team Name
                   </Label>
                   <Input
@@ -121,7 +121,7 @@ export default function TeamSignupPage() {
                     placeholder="Enter your team name"
                     value={teamName}
                     onChange={(e) => setTeamName(e.target.value)}
-                    className="border-gray-300"
+                    className="border-border"
                     disabled={isLoading}
                   />
                 </div>
@@ -129,13 +129,13 @@ export default function TeamSignupPage() {
 
               <Button
                 onClick={handleGoogleSignIn}
-                className="w-full bg-black text-white hover:bg-gray-800"
+                className="w-full accent-button"
                 disabled={isLoading || !teamName.trim()}
               >
                 {isLoading ? "Signing in..." : "Sign up with Google"}
               </Button>
 
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-xs text-muted-foreground text-center">
                 By signing in, you agree to participate in the OASIS restoration challenge
               </p>
             </CardContent>

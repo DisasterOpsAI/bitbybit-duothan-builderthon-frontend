@@ -88,35 +88,35 @@ export default function TeamDashboard() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "locked":
-        return <Lock className="w-4 h-4 text-gray-400" />
+        return <Lock className="w-4 h-4 text-muted-foreground" />
       case "available":
-        return <AlertCircle className="w-4 h-4 text-black" />
+        return <AlertCircle className="w-4 h-4 text-foreground" />
       case "algorithmic_solved":
-        return <Code className="w-4 h-4 text-black" />
+        return <Code className="w-4 h-4 text-foreground" />
       case "completed":
-        return <CheckCircle className="w-4 h-4 text-black" />
+        return <CheckCircle className="w-4 h-4 text-foreground" />
       default:
-        return <Lock className="w-4 h-4 text-gray-400" />
+        return <Lock className="w-4 h-4 text-muted-foreground" />
     }
   }
 
   if (loading || isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-black text-xl">Loading dashboard...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-foreground text-xl">Loading dashboard...</div>
       </div>
     )
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <Card className="border-gray-200 p-8">
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="border-border p-8">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-black mb-4">Access Denied</h2>
-            <p className="text-gray-600 mb-6">Please authenticate to access the team dashboard</p>
+            <h2 className="text-2xl font-bold text-foreground mb-4">Access Denied</h2>
+            <p className="text-muted-foreground mb-6">Please authenticate to access the team dashboard</p>
             <Link href="/auth/team-login">
-              <Button className="bg-black text-white hover:bg-gray-800">Go to Login</Button>
+              <Button className="accent-button">Go to Login</Button>
             </Link>
           </div>
         </Card>
@@ -125,21 +125,21 @@ export default function TeamDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <TeamNavbar />
 
       <div className="container mx-auto px-4 py-8">
         {/* Welcome Section */}
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-black mb-2">
+            <h1 className="text-4xl font-bold text-foreground mb-2">
               Welcome back, {user?.displayName || localStorage.getItem("teamName") || "Team"}
             </h1>
-            <p className="text-gray-600">Continue your mission to restore the OASIS</p>
+            <p className="text-muted-foreground">Continue your mission to restore the OASIS</p>
           </div>
           <Button 
             onClick={fetchDashboardData}
-            className="bg-black text-white hover:bg-gray-800"
+            className="accent-button"
             disabled={isLoading}
           >
             {isLoading ? "Loading..." : "Refresh"}
@@ -148,54 +148,54 @@ export default function TeamDashboard() {
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card className="border-gray-200">
+          <Card className="border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-black flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Trophy className="w-4 h-4 mr-2" />
                 Total Points
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-black">{teamStats.totalPoints}</div>
+              <div className="text-2xl font-bold text-foreground">{teamStats.totalPoints}</div>
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200">
+          <Card className="border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-black flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <CheckCircle className="w-4 h-4 mr-2" />
                 Completed
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-black">{teamStats.challengesCompleted}</div>
+              <div className="text-2xl font-bold text-foreground">{teamStats.challengesCompleted}</div>
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200">
+          <Card className="border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-black flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Users className="w-4 h-4 mr-2" />
                 Team Rank
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-black">
+              <div className="text-2xl font-bold text-foreground">
                 #{teamStats.currentRank} / {teamStats.totalTeams}
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200">
+          <Card className="border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-black flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Clock className="w-4 h-4 mr-2" />
                 Progress
               </CardTitle>
             </CardHeader>
             <CardContent>
               <Progress value={(teamStats.challengesCompleted / challenges.length) * 100} className="w-full" />
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-xs text-muted-foreground mt-1">
                 {teamStats.challengesCompleted} of {challenges.length} challenges
               </div>
             </CardContent>
@@ -204,21 +204,21 @@ export default function TeamDashboard() {
 
         {/* Challenges Section */}
         <Tabs defaultValue="available" className="space-y-6">
-          <TabsList className="bg-gray-100 border-gray-200">
-            <TabsTrigger value="available" className="text-black">
+          <TabsList className="bg-background border-border">
+            <TabsTrigger value="available" className="text-foreground">
               Available Challenges
             </TabsTrigger>
-            <TabsTrigger value="completed" className="text-black">
+            <TabsTrigger value="completed" className="text-foreground">
               Completed
             </TabsTrigger>
-            <TabsTrigger value="all" className="text-black">
+            <TabsTrigger value="all" className="text-foreground">
               All Challenges
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="available" className="space-y-4">
-            <div className="mb-4 p-4 bg-gray-100 rounded">
-              <p className="text-sm text-gray-600">
+            <div className="mb-4 p-4 bg-background rounded">
+              <p className="text-sm text-muted-foreground">
                 Debug: Found {challenges.length} total challenges, {challenges.filter(c => c.status === "available" || c.status === "algorithmic_solved").length} available
               </p>
             </div>
@@ -226,25 +226,25 @@ export default function TeamDashboard() {
               {challenges
                 .filter((c) => c.status === "available" || c.status === "algorithmic_solved")
                 .map((challenge) => (
-                  <Card key={challenge.id} className="border-gray-200">
+                  <Card key={challenge.id} className="border-border">
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle className="text-black flex items-center">
+                          <CardTitle className="text-foreground flex items-center">
                             {getStatusIcon(challenge.status)}
                             <span className="ml-2">{challenge.title}</span>
                           </CardTitle>
-                          <CardDescription className="text-gray-600 mt-1">
+                          <CardDescription className="text-muted-foreground mt-1">
                             {challenge.status === "available" && "Solve the algorithmic challenge to unlock buildathon"}
                             {challenge.status === "algorithmic_solved" &&
                               "Algorithmic solved! Complete the buildathon challenge"}
                           </CardDescription>
                         </div>
                         <div className="flex space-x-2">
-                          <Badge variant="outline" className="border-gray-300 text-black">
+                          <Badge variant="outline" className="border-border text-foreground">
                             {challenge.difficulty}
                           </Badge>
-                          <Badge variant="outline" className="border-gray-300 text-black">
+                          <Badge variant="outline" className="border-border text-foreground">
                             {challenge.status.replace("_", " ")}
                           </Badge>
                         </div>
@@ -252,8 +252,8 @@ export default function TeamDashboard() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex justify-between items-center">
-                        <div className="text-gray-600">
-                          <span className="font-semibold text-black">{challenge.points}</span> points
+                        <div className="text-muted-foreground">
+                          <span className="font-semibold text-foreground">{challenge.points}</span> points
                           {challenge.timeLimit && (
                             <span className="ml-4">
                               <Clock className="w-4 h-4 inline mr-1" />
@@ -262,7 +262,7 @@ export default function TeamDashboard() {
                           )}
                         </div>
                         <Link href={`/challenges/${challenge.id}`}>
-                          <Button className="bg-black text-white hover:bg-gray-800">
+                          <Button className="accent-button">
                             {challenge.status === "available" ? "Start Challenge" : "Continue"}
                           </Button>
                         </Link>
@@ -278,15 +278,15 @@ export default function TeamDashboard() {
               {challenges
                 .filter((c) => c.status === "completed")
                 .map((challenge) => (
-                  <Card key={challenge.id} className="border-gray-200">
+                  <Card key={challenge.id} className="border-border">
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle className="text-black flex items-center">
+                          <CardTitle className="text-foreground flex items-center">
                             <CheckCircle className="w-5 h-5 mr-2" />
                             {challenge.title}
                           </CardTitle>
-                          <CardDescription className="text-gray-600 mt-1">
+                          <CardDescription className="text-muted-foreground mt-1">
                             Challenge completed successfully
                           </CardDescription>
                         </div>
@@ -297,13 +297,13 @@ export default function TeamDashboard() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex justify-between items-center">
-                        <div className="text-gray-600">
+                        <div className="text-muted-foreground">
                           <span className="font-semibold text-green-700">{challenge.points}</span> points earned
                         </div>
                         <Link href={`/challenges/${challenge.id}`}>
                           <Button
                             variant="outline"
-                            className="border-gray-300 text-black hover:bg-gray-50 bg-transparent"
+                            className="border-border text-foreground hover:bg-background bg-transparent"
                           >
                             View Solution
                           </Button>
@@ -318,15 +318,15 @@ export default function TeamDashboard() {
           <TabsContent value="all" className="space-y-4">
             <div className="grid gap-4">
               {challenges.map((challenge) => (
-                <Card key={challenge.id} className="border-gray-200">
+                <Card key={challenge.id} className="border-border">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
-                        <CardTitle className="text-black flex items-center">
+                        <CardTitle className="text-foreground flex items-center">
                           {getStatusIcon(challenge.status)}
                           <span className="ml-2">{challenge.title}</span>
                         </CardTitle>
-                        <CardDescription className="text-gray-600 mt-1">
+                        <CardDescription className="text-muted-foreground mt-1">
                           {challenge.status === "locked" && "Complete previous challenges to unlock"}
                           {challenge.status === "available" && "Ready to start"}
                           {challenge.status === "algorithmic_solved" && "Algorithmic phase completed"}
@@ -334,10 +334,10 @@ export default function TeamDashboard() {
                         </CardDescription>
                       </div>
                       <div className="flex space-x-2">
-                        <Badge variant="outline" className="border-gray-300 text-black">
+                        <Badge variant="outline" className="border-border text-foreground">
                           {challenge.difficulty}
                         </Badge>
-                        <Badge variant="outline" className="border-gray-300 text-black">
+                        <Badge variant="outline" className="border-border text-foreground">
                           {challenge.status.replace("_", " ")}
                         </Badge>
                       </div>
@@ -345,13 +345,13 @@ export default function TeamDashboard() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex justify-between items-center">
-                      <div className="text-gray-600">
-                        <span className="font-semibold text-black">{challenge.points}</span> points
+                      <div className="text-muted-foreground">
+                        <span className="font-semibold text-foreground">{challenge.points}</span> points
                       </div>
                       {challenge.status !== "locked" && (
                         <Link href={`/challenges/${challenge.id}`}>
                           <Button
-                            className="bg-black text-white hover:bg-gray-800"
+                            className="accent-button"
                           >
                             {challenge.status === "completed" ? "View" : "Open"}
                           </Button>

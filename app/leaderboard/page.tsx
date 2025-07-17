@@ -59,7 +59,7 @@ export default function LeaderboardPage() {
       case 3:
         return <Award className="w-6 h-6 text-orange-400" />
       default:
-        return <div className="w-6 h-6 flex items-center justify-center text-white font-bold">#{rank}</div>
+        return <div className="w-6 h-6 flex items-center justify-center text-foreground font-bold">#{rank}</div>
     }
   }
 
@@ -72,7 +72,7 @@ export default function LeaderboardPage() {
       case 3:
         return "bg-orange-500/20 border-orange-500/30"
       default:
-        return "bg-black/40 border-white/20"
+        return "bg-black/40 border-border"
     }
   }
 
@@ -81,7 +81,7 @@ export default function LeaderboardPage() {
       <div className="min-h-screen oasis-bg">
         <TeamNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
-          <div className="text-white text-xl">Loading leaderboard...</div>
+          <div className="text-foreground text-xl">Loading leaderboard...</div>
         </div>
       </div>
     )
@@ -97,51 +97,51 @@ export default function LeaderboardPage() {
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="bg-black/40 border-border backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Users className="w-4 h-4 mr-2 text-blue-400" />
                 Total Teams
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.totalTeams}</div>
+              <div className="text-2xl font-bold text-foreground">{stats.totalTeams}</div>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="bg-black/40 border-border backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Code className="w-4 h-4 mr-2 text-green-400" />
                 Active Challenges
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.activeChallenges}</div>
+              <div className="text-2xl font-bold text-foreground">{stats.activeChallenges}</div>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="bg-black/40 border-border backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Trophy className="w-4 h-4 mr-2 text-yellow-400" />
                 Total Submissions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.totalSubmissions}</div>
+              <div className="text-2xl font-bold text-foreground">{stats.totalSubmissions}</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Leaderboard */}
-        <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+        <Card className="bg-black/40 border-border backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-white flex items-center">
+            <CardTitle className="text-foreground flex items-center">
               <Trophy className="w-5 h-5 mr-2 text-yellow-400" />
               Team Rankings
             </CardTitle>
-            <CardDescription className="text-white/70">
+            <CardDescription className="text-muted-foreground">
               Real-time rankings based on points and completion time
             </CardDescription>
           </CardHeader>
@@ -163,8 +163,8 @@ export default function LeaderboardPage() {
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <h3 className="text-white font-semibold text-lg">{entry.teamName}</h3>
-                            <div className="flex items-center space-x-4 text-sm text-white/70">
+                            <h3 className="text-foreground font-semibold text-lg">{entry.teamName}</h3>
+                            <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                               <span className="flex items-center">
                                 <Trophy className="w-3 h-3 mr-1 text-yellow-400" />
                                 {entry.totalPoints} points
@@ -204,11 +204,11 @@ export default function LeaderboardPage() {
 
             {leaderboard.length === 0 && (
               <div className="text-center py-12">
-                <Trophy className="w-16 h-16 text-white/30 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">No Teams Yet</h3>
-                <p className="text-white/70 mb-6">Be the first team to register and start the challenge!</p>
+                <Trophy className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">No Teams Yet</h3>
+                <p className="text-muted-foreground mb-6">Be the first team to register and start the challenge!</p>
                 <Link href="/auth/team-signup">
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                  <Button className="accent-button">
                     Register Your Team
                   </Button>
                 </Link>

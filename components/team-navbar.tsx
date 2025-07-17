@@ -18,16 +18,16 @@ export function TeamNavbar() {
   }
 
   return (
-    <nav className="border-b border-gray-200 bg-white">
+    <nav className="border-b border-border bg-background">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/dashboard" className="flex items-center space-x-2">
-          <Code className="w-8 h-8 text-black" />
-          <span className="text-xl font-bold text-black">OASIS Protocol</span>
+          <Code className="w-8 h-8 text-foreground" />
+          <span className="text-xl font-bold text-foreground">OASIS Protocol</span>
         </Link>
 
         <div className="flex items-center space-x-4">
           <Link href="/leaderboard">
-            <Button variant="outline" className="border-gray-300 text-black hover:bg-gray-50 bg-transparent">
+            <Button variant="outline" className="border-border text-foreground hover:bg-accent bg-transparent">
               <Trophy className="w-4 h-4 mr-2" />
               Leaderboard
             </Button>
@@ -35,13 +35,13 @@ export function TeamNavbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="border-gray-300 text-black hover:bg-gray-50 bg-transparent">
+              <Button variant="outline" className="border-border text-foreground hover:bg-accent bg-transparent">
                 <User className="w-4 h-4 mr-2" />
                 {user?.displayName || localStorage.getItem("teamName") || "Team"}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white border-gray-200">
-              <DropdownMenuItem onClick={handleSignOut} className="text-black hover:bg-gray-50">
+            <DropdownMenuContent className="bg-background border-border">
+              <DropdownMenuItem onClick={handleSignOut} className="text-foreground hover:bg-accent">
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </DropdownMenuItem>
