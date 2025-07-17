@@ -137,7 +137,7 @@ export default function SubmissionDetailPage() {
       case "rejected":
         return <Badge className="bg-red-500/20 text-red-300 border-red-500/30"><XCircle className="w-3 h-3 mr-1" />Rejected</Badge>
       default:
-        return <Badge className="bg-gray-500/20 text-gray-300 border-gray-500/30">{status}</Badge>
+        return <Badge className="bg-muted/20 text-muted-foreground border-border">{status}</Badge>
     }
   }
 
@@ -148,16 +148,16 @@ export default function SubmissionDetailPage() {
       case "buildathon":
         return <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30"><GitBranch className="w-3 h-3 mr-1" />Buildathon</Badge>
       default:
-        return <Badge className="bg-gray-500/20 text-gray-300 border-gray-500/30">{type}</Badge>
+        return <Badge className="bg-muted/20 text-muted-foreground border-border">{type}</Badge>
     }
   }
 
   if (isLoading) {
     return (
-      <div className="min-h-screen oasis-bg">
+      <div className="min-h-screen bg-background">
         <AdminNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
-          <div className="text-white text-xl">Loading submission...</div>
+          <div className="text-foreground text-xl">Loading submission...</div>
         </div>
       </div>
     )
@@ -165,13 +165,13 @@ export default function SubmissionDetailPage() {
 
   if (error && !submission) {
     return (
-      <div className="min-h-screen oasis-bg">
+      <div className="min-h-screen bg-background">
         <AdminNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
           <div className="text-red-400 text-xl">{error}</div>
           <Button 
             onClick={() => router.push("/admin/submissions")} 
-            className="mt-4 bg-transparent text-white border-gray-600 hover:bg-gray-800"
+            className="mt-4 bg-transparent text-foreground border-border hover:bg-muted"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Submissions
@@ -183,13 +183,13 @@ export default function SubmissionDetailPage() {
 
   if (!submission) {
     return (
-      <div className="min-h-screen oasis-bg">
+      <div className="min-h-screen bg-background">
         <AdminNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
-          <div className="text-white text-xl">Submission not found</div>
+          <div className="text-foreground text-xl">Submission not found</div>
           <Button 
             onClick={() => router.push("/admin/submissions")} 
-            className="mt-4 bg-transparent text-white border-gray-600 hover:bg-gray-800"
+            className="mt-4 bg-transparent text-foreground border-border hover:bg-muted"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Submissions
@@ -200,14 +200,14 @@ export default function SubmissionDetailPage() {
   }
 
   return (
-    <div className="min-h-screen oasis-bg">
+    <div className="min-h-screen bg-background">
       <AdminNavbar />
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <Button 
             onClick={() => router.push("/admin/submissions")} 
-            className="mb-4 bg-transparent text-white border-gray-600 hover:bg-gray-800"
+            className="mb-4 bg-transparent text-foreground border-border hover:bg-muted"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Submissions
@@ -215,8 +215,8 @@ export default function SubmissionDetailPage() {
           
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2">Submission Review</h1>
-              <p className="text-gray-400">Review and evaluate team submission</p>
+              <h1 className="text-4xl font-bold text-foreground mb-2">Submission Review</h1>
+              <p className="text-muted-foreground">Review and evaluate team submission</p>
             </div>
             <div className="flex gap-2">
               {getTypeBadge(submission.type)}
@@ -242,9 +242,9 @@ export default function SubmissionDetailPage() {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Submission Details */}
           <div className="space-y-6">
-            <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+            <Card className="surface-elevated border-border backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+                <CardTitle className="text-foreground flex items-center gap-2">
                   <Users className="w-5 h-5" />
                   Team Information
                 </CardTitle>
@@ -252,20 +252,20 @@ export default function SubmissionDetailPage() {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-white">Team Name</Label>
-                    <div className="text-gray-300 font-medium">{submission.teamName}</div>
+                    <Label className="text-foreground">Team Name</Label>
+                    <div className="text-muted-foreground font-medium">{submission.teamName}</div>
                   </div>
                   <div>
-                    <Label className="text-white">Team ID</Label>
-                    <div className="text-gray-300 font-mono text-sm">{submission.teamId}</div>
+                    <Label className="text-foreground">Team ID</Label>
+                    <div className="text-muted-foreground font-mono text-sm">{submission.teamId}</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+            <Card className="surface-elevated border-border backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+                <CardTitle className="text-foreground flex items-center gap-2">
                   <Trophy className="w-5 h-5" />
                   Challenge Information
                 </CardTitle>
@@ -273,27 +273,27 @@ export default function SubmissionDetailPage() {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-white">Challenge Title</Label>
-                    <div className="text-gray-300 font-medium">{submission.challengeTitle}</div>
+                    <Label className="text-foreground">Challenge Title</Label>
+                    <div className="text-muted-foreground font-medium">{submission.challengeTitle}</div>
                   </div>
                   <div>
-                    <Label className="text-white">Points</Label>
-                    <div className="text-gray-300 font-medium flex items-center gap-2">
+                    <Label className="text-foreground">Points</Label>
+                    <div className="text-muted-foreground font-medium flex items-center gap-2">
                       <Trophy className="w-4 h-4 text-yellow-400" />
                       {submission.points}
                     </div>
                   </div>
                 </div>
                 <div>
-                  <Label className="text-white">Challenge ID</Label>
-                  <div className="text-gray-300 font-mono text-sm">{submission.challengeId}</div>
+                  <Label className="text-foreground">Challenge ID</Label>
+                  <div className="text-muted-foreground font-mono text-sm">{submission.challengeId}</div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+            <Card className="surface-elevated border-border backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+                <CardTitle className="text-foreground flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
                   Submission Details
                 </CardTitle>
@@ -301,8 +301,8 @@ export default function SubmissionDetailPage() {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-white">Submitted At</Label>
-                    <div className="text-gray-300">
+                    <Label className="text-foreground">Submitted At</Label>
+                    <div className="text-muted-foreground">
                       {new Date(submission.submittedAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
@@ -313,13 +313,13 @@ export default function SubmissionDetailPage() {
                     </div>
                   </div>
                   <div>
-                    <Label className="text-white">Type</Label>
-                    <div className="text-gray-300 capitalize">{submission.type}</div>
+                    <Label className="text-foreground">Type</Label>
+                    <div className="text-muted-foreground capitalize">{submission.type}</div>
                   </div>
                 </div>
                 <div>
-                  <Label className="text-white">Submission ID</Label>
-                  <div className="text-gray-300 font-mono text-sm">{submission.id}</div>
+                  <Label className="text-foreground">Submission ID</Label>
+                  <div className="text-muted-foreground font-mono text-sm">{submission.id}</div>
                 </div>
               </CardContent>
             </Card>
@@ -327,15 +327,15 @@ export default function SubmissionDetailPage() {
 
           {/* Submission Content & Review */}
           <div className="space-y-6">
-            <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+            <Card className="surface-elevated border-border backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Submission Content</CardTitle>
+                <CardTitle className="text-foreground">Submission Content</CardTitle>
               </CardHeader>
               <CardContent>
                 {submission.type === "buildathon" ? (
                   <div className="space-y-4">
-                    <div className="bg-gray-700 p-4 rounded border border-gray-600">
-                      <Label className="text-white">GitHub Repository</Label>
+                    <div className="surface-elevated p-4 rounded border border-border">
+                      <Label className="text-foreground">GitHub Repository</Label>
                       <div className="mt-2">
                         <a
                           href={submission.content}
@@ -352,14 +352,14 @@ export default function SubmissionDetailPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <Button
                         onClick={() => window.open(submission.content, '_blank')}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        className="accent-button"
                       >
                         <ExternalLink className="w-4 h-4 mr-2" />
                         View Repository
                       </Button>
                       <Button
                         onClick={() => window.open(`${submission.content}/issues`, '_blank')}
-                        className="bg-gray-600 hover:bg-gray-700 text-white"
+                        className="surface-elevated text-foreground hover:bg-muted"
                       >
                         <GitBranch className="w-4 h-4 mr-2" />
                         View Issues
@@ -367,8 +367,8 @@ export default function SubmissionDetailPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-gray-700 p-4 rounded border border-gray-600">
-                    <Label className="text-white">Algorithmic Solution</Label>
+                  <div className="surface-elevated p-4 rounded border border-border">
+                    <Label className="text-foreground">Algorithmic Solution</Label>
                     <div className="mt-2">
                       <code className="text-green-400 text-lg">{submission.content}</code>
                     </div>
@@ -378,17 +378,17 @@ export default function SubmissionDetailPage() {
             </Card>
 
             {submission.status === "pending" && (
-              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+              <Card className="surface-elevated border-border backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white">Review Submission</CardTitle>
-                  <CardDescription className="text-gray-400">
+                  <CardTitle className="text-foreground">Review Submission</CardTitle>
+                  <CardDescription className="text-muted-foreground">
                     Review this submission and provide feedback
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="points" className="text-white">
+                      <Label htmlFor="points" className="text-foreground">
                         Points to Award
                       </Label>
                       <Input
@@ -397,19 +397,19 @@ export default function SubmissionDetailPage() {
                         min="0"
                         value={customPoints}
                         onChange={(e) => setCustomPoints(parseInt(e.target.value) || 0)}
-                        className="bg-gray-700 border-gray-600 text-white"
+                        className="surface-elevated border-border text-foreground"
                       />
                     </div>
                     <div>
-                      <Label className="text-white">Default Points</Label>
-                      <div className="text-gray-300 bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                      <Label className="text-foreground">Default Points</Label>
+                      <div className="text-muted-foreground surface-elevated border border-border rounded px-3 py-2">
                         {submission.points}
                       </div>
                     </div>
                   </div>
                   
                   <div>
-                    <Label htmlFor="feedback" className="text-white">
+                    <Label htmlFor="feedback" className="text-foreground">
                       Feedback (Optional)
                     </Label>
                     <Textarea
@@ -417,7 +417,7 @@ export default function SubmissionDetailPage() {
                       placeholder="Provide feedback for the team..."
                       value={feedback}
                       onChange={(e) => setFeedback(e.target.value)}
-                      className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 min-h-[100px]"
+                      className="surface-elevated border-border text-foreground placeholder:text-muted-foreground min-h-[100px]"
                     />
                   </div>
 
@@ -444,13 +444,13 @@ export default function SubmissionDetailPage() {
             )}
 
             {submission.feedback && (
-              <Card className="bg-gray-800 border-gray-600 backdrop-blur-sm">
+              <Card className="surface-elevated border-border backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white">Admin Feedback</CardTitle>
+                  <CardTitle className="text-foreground">Admin Feedback</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-gray-700 p-4 rounded border border-gray-600">
-                    <p className="text-gray-300">{submission.feedback}</p>
+                  <div className="surface-elevated p-4 rounded border border-border">
+                    <p className="text-muted-foreground">{submission.feedback}</p>
                   </div>
                 </CardContent>
               </Card>

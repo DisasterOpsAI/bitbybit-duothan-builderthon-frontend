@@ -46,17 +46,17 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="border-b border-gray-200">
+    <div className="min-h-screen bg-background">
+      <nav className="border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
-            <Code className="w-8 h-8 text-black" />
-            <span className="text-xl font-bold text-black">OASIS Protocol</span>
+            <Code className="w-8 h-8 text-foreground" />
+            <span className="text-xl font-bold text-foreground">OASIS Protocol</span>
           </Link>
           <Link href="/auth/team-login">
             <Button
               variant="outline"
-              className="border-black text-black hover:bg-black hover:text-white bg-transparent"
+              className="border-border text-foreground hover:bg-foreground hover:text-background bg-transparent"
             >
               Team Portal
             </Button>
@@ -67,31 +67,31 @@ export default function AdminLoginPage() {
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-black mb-2">Admin Portal</h1>
-            <p className="text-gray-600">Secure access to platform management</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Admin Portal</h1>
+            <p className="text-muted-foreground">Secure access to platform management</p>
           </div>
 
-          <Card className="border-gray-200">
+          <Card className="border-border">
             <CardHeader>
-              <CardTitle className="text-black flex items-center">
+              <CardTitle className="text-foreground flex items-center">
                 <Shield className="w-5 h-5 mr-2" />
                 Administrator Login
               </CardTitle>
-              <CardDescription className="text-gray-600">
+              <CardDescription className="text-muted-foreground">
                 Enter your admin credentials to access the control panel
               </CardDescription>
             </CardHeader>
             <CardContent>
               {error && (
-                <Alert className="border-red-200 bg-red-50 mb-6">
-                  <AlertCircle className="h-4 w-4 text-red-600" />
-                  <AlertDescription className="text-red-700">{error}</AlertDescription>
+                <Alert className="border-destructive bg-destructive/10 mb-6">
+                  <AlertCircle className="h-4 w-4 text-destructive" />
+                  <AlertDescription className="text-destructive">{error}</AlertDescription>
                 </Alert>
               )}
 
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <Label htmlFor="username" className="text-black">
+                  <Label htmlFor="username" className="text-foreground">
                     Username
                   </Label>
                   <Input
@@ -100,13 +100,13 @@ export default function AdminLoginPage() {
                     placeholder="Admin username"
                     value={credentials.username}
                     onChange={(e) => setCredentials((prev) => ({ ...prev, username: e.target.value }))}
-                    className="border-gray-300"
+                    className="border-border"
                     disabled={isLoading}
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="password" className="text-black">
+                  <Label htmlFor="password" className="text-foreground">
                     Password
                   </Label>
                   <div className="relative">
@@ -116,7 +116,7 @@ export default function AdminLoginPage() {
                       placeholder="Admin password"
                       value={credentials.password}
                       onChange={(e) => setCredentials((prev) => ({ ...prev, password: e.target.value }))}
-                      className="border-gray-300 pr-10"
+                      className="border-border pr-10"
                       disabled={isLoading}
                       required
                     />
@@ -124,20 +124,20 @@ export default function AdminLoginPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-black"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </Button>
                   </div>
                 </div>
-                <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800" disabled={isLoading}>
+                <Button type="submit" className="w-full accent-button" disabled={isLoading}>
                   {isLoading ? "Authenticating..." : "Access Admin Panel"}
                 </Button>
               </form>
 
-              <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                <p className="text-xs text-gray-600">
+              <div className="mt-6 p-4 bg-muted border border-border rounded-lg">
+                <p className="text-xs text-muted-foreground">
                   <strong>Demo Credentials:</strong>
                   <br />
                   Username: admin

@@ -107,30 +107,30 @@ export default function AdminSettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen oasis-bg">
+      <div className="min-h-screen bg-background">
         <AdminNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
-          <div className="text-white text-xl">Loading settings...</div>
+          <div className="text-foreground text-xl">Loading settings...</div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen oasis-bg">
+    <div className="min-h-screen bg-background">
       <AdminNavbar />
 
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Platform Settings</h1>
-            <p className="text-white/70">Configure platform behavior and features</p>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Platform Settings</h1>
+            <p className="text-muted-foreground">Configure platform behavior and features</p>
           </div>
           <Button 
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
+            className="accent-button"
           >
             {isSaving ? (
               <>
@@ -163,67 +163,67 @@ export default function AdminSettingsPage() {
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Platform Configuration */}
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated">
             <CardHeader>
-              <CardTitle className="text-white flex items-center">
+              <CardTitle className="text-foreground flex items-center">
                 <Settings className="w-5 h-5 mr-2" />
                 Platform Configuration
               </CardTitle>
-              <CardDescription className="text-white/70">
+              <CardDescription className="text-muted-foreground">
                 Basic platform settings and information
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <Label className="text-white">Platform Title</Label>
+                <Label className="text-foreground">Platform Title</Label>
                 <Input
                   value={settings.platformTitle}
                   onChange={(e) => handleInputChange('platformTitle', e.target.value)}
-                  className="bg-black/40 border-white/20 text-white placeholder-white/50"
+                  className="bg-background border-border text-foreground placeholder-muted-foreground"
                   placeholder="Enter platform title"
                 />
               </div>
 
               <div>
-                <Label className="text-white">Platform Description</Label>
+                <Label className="text-foreground">Platform Description</Label>
                 <Textarea
                   value={settings.platformDescription}
                   onChange={(e) => handleInputChange('platformDescription', e.target.value)}
-                  className="bg-black/40 border-white/20 text-white placeholder-white/50 h-20"
+                  className="bg-background border-border text-foreground placeholder-muted-foreground h-20"
                   placeholder="Enter platform description"
                 />
               </div>
 
               <div>
-                <Label className="text-white">Maximum Team Size</Label>
+                <Label className="text-foreground">Maximum Team Size</Label>
                 <Input
                   type="number"
                   value={settings.maxTeamSize}
                   onChange={(e) => handleInputChange('maxTeamSize', parseInt(e.target.value))}
-                  className="bg-black/40 border-white/20 text-white placeholder-white/50"
+                  className="bg-background border-border text-foreground placeholder-muted-foreground"
                   min="1"
                   max="10"
                 />
               </div>
 
               <div>
-                <Label className="text-white">Submission Cooldown (seconds)</Label>
+                <Label className="text-foreground">Submission Cooldown (seconds)</Label>
                 <Input
                   type="number"
                   value={settings.submissionCooldown}
                   onChange={(e) => handleInputChange('submissionCooldown', parseInt(e.target.value))}
-                  className="bg-black/40 border-white/20 text-white placeholder-white/50"
+                  className="bg-background border-border text-foreground placeholder-muted-foreground"
                   min="0"
                 />
               </div>
 
               <div>
-                <Label className="text-white">Challenge Time Limit (seconds)</Label>
+                <Label className="text-foreground">Challenge Time Limit (seconds)</Label>
                 <Input
                   type="number"
                   value={settings.challengeTimeLimit}
                   onChange={(e) => handleInputChange('challengeTimeLimit', parseInt(e.target.value))}
-                  className="bg-black/40 border-white/20 text-white placeholder-white/50"
+                  className="bg-background border-border text-foreground placeholder-muted-foreground"
                   min="60"
                 />
               </div>
@@ -231,18 +231,18 @@ export default function AdminSettingsPage() {
           </Card>
 
           {/* Feature Toggles */}
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated">
             <CardHeader>
-              <CardTitle className="text-white">Feature Toggles</CardTitle>
-              <CardDescription className="text-white/70">
+              <CardTitle className="text-foreground">Feature Toggles</CardTitle>
+              <CardDescription className="text-muted-foreground">
                 Enable or disable platform features
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label className="text-white">Team Registration</Label>
-                  <p className="text-white/60 text-sm">Allow new teams to register</p>
+                  <Label className="text-foreground">Team Registration</Label>
+                  <p className="text-muted-foreground text-sm">Allow new teams to register</p>
                 </div>
                 <Switch
                   checked={settings.registrationEnabled}
@@ -252,8 +252,8 @@ export default function AdminSettingsPage() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label className="text-white">Challenge Submissions</Label>
-                  <p className="text-white/60 text-sm">Allow teams to submit solutions</p>
+                  <Label className="text-foreground">Challenge Submissions</Label>
+                  <p className="text-muted-foreground text-sm">Allow teams to submit solutions</p>
                 </div>
                 <Switch
                   checked={settings.submissionEnabled}
@@ -263,8 +263,8 @@ export default function AdminSettingsPage() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label className="text-white">Public Leaderboard</Label>
-                  <p className="text-white/60 text-sm">Make leaderboard visible to teams</p>
+                  <Label className="text-foreground">Public Leaderboard</Label>
+                  <p className="text-muted-foreground text-sm">Make leaderboard visible to teams</p>
                 </div>
                 <Switch
                   checked={settings.leaderboardPublic}
@@ -274,8 +274,8 @@ export default function AdminSettingsPage() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label className="text-white">Maintenance Mode</Label>
-                  <p className="text-white/60 text-sm">Put platform in maintenance mode</p>
+                  <Label className="text-foreground">Maintenance Mode</Label>
+                  <p className="text-muted-foreground text-sm">Put platform in maintenance mode</p>
                 </div>
                 <Switch
                   checked={settings.maintenanceMode}
@@ -286,36 +286,36 @@ export default function AdminSettingsPage() {
           </Card>
 
           {/* API Configuration */}
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm lg:col-span-2">
+          <Card className="surface-elevated lg:col-span-2">
             <CardHeader>
-              <CardTitle className="text-white">API Configuration</CardTitle>
-              <CardDescription className="text-white/70">
+              <CardTitle className="text-foreground">API Configuration</CardTitle>
+              <CardDescription className="text-muted-foreground">
                 Configure external API endpoints and credentials
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Label className="text-white">Judge0 API URL</Label>
+                  <Label className="text-foreground">Judge0 API URL</Label>
                   <Input
                     value={settings.judge0ApiUrl}
                     disabled
-                    className="bg-black/40 border-white/20 text-white/60 placeholder-white/50"
+                    className="bg-background border-border text-muted-foreground placeholder-muted-foreground"
                     placeholder="Configured via environment variables"
                   />
-                  <p className="text-white/60 text-xs mt-1">Set via JUDGE0_API_URL environment variable</p>
+                  <p className="text-muted-foreground text-xs mt-1">Set via JUDGE0_API_URL environment variable</p>
                 </div>
 
                 <div>
-                  <Label className="text-white">Judge0 API Token</Label>
+                  <Label className="text-foreground">Judge0 API Token</Label>
                   <Input
                     type="password"
                     value={settings.judge0ApiToken}
                     disabled
-                    className="bg-black/40 border-white/20 text-white/60 placeholder-white/50"
+                    className="bg-background border-border text-muted-foreground placeholder-muted-foreground"
                     placeholder="••••••••••••••••"
                   />
-                  <p className="text-white/60 text-xs mt-1">Set via JUDGE0_API_TOKEN environment variable</p>
+                  <p className="text-muted-foreground text-xs mt-1">Set via JUDGE0_API_TOKEN environment variable</p>
                 </div>
               </div>
 

@@ -131,45 +131,45 @@ export default function AdminSubmissionsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen oasis-bg">
+      <div className="min-h-screen bg-background">
         <AdminNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
-          <div className="text-white text-xl">Loading submissions...</div>
+          <div className="text-foreground text-xl">Loading submissions...</div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen oasis-bg">
+    <div className="min-h-screen bg-background">
       <AdminNavbar />
 
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Submissions</h1>
-            <p className="text-white/70">Review and manage team submissions</p>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Submissions</h1>
+            <p className="text-muted-foreground">Review and manage team submissions</p>
           </div>
         </div>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-8">
           <div className="relative flex-1 min-w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder="Search submissions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-black/40 border-white/20 text-white placeholder-white/50"
+              className="pl-10 bg-background border-border text-foreground placeholder-muted-foreground"
             />
           </div>
           
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-48 bg-black/40 border-white/20 text-white">
+            <SelectTrigger className="w-48 bg-background border-border text-foreground">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
-            <SelectContent className="bg-black/90 border-white/20">
+            <SelectContent className="bg-background border-border">
               <SelectItem value="all">All Statuses</SelectItem>
               <SelectItem value="pending">Pending</SelectItem>
               <SelectItem value="accepted">Accepted</SelectItem>
@@ -178,10 +178,10 @@ export default function AdminSubmissionsPage() {
           </Select>
 
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-48 bg-black/40 border-white/20 text-white">
+            <SelectTrigger className="w-48 bg-background border-border text-foreground">
               <SelectValue placeholder="Filter by type" />
             </SelectTrigger>
-            <SelectContent className="bg-black/90 border-white/20">
+            <SelectContent className="bg-background border-border">
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="algorithmic">Algorithmic</SelectItem>
               <SelectItem value="buildathon">Buildathon</SelectItem>
@@ -191,61 +191,61 @@ export default function AdminSubmissionsPage() {
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Trophy className="w-4 h-4 mr-2 text-blue-400" />
                 Total Submissions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{submissions.length}</div>
-              <p className="text-xs text-white/60">All submissions</p>
+              <div className="text-2xl font-bold text-foreground">{submissions.length}</div>
+              <p className="text-xs text-muted-foreground">All submissions</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <CheckCircle className="w-4 h-4 mr-2 text-green-400" />
                 Accepted
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-foreground">
                 {submissions.filter(s => s.status === 'accepted').length}
               </div>
-              <p className="text-xs text-white/60">Successful solutions</p>
+              <p className="text-xs text-muted-foreground">Successful solutions</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Clock className="w-4 h-4 mr-2 text-yellow-400" />
                 Pending
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-foreground">
                 {submissions.filter(s => s.status === 'pending').length}
               </div>
-              <p className="text-xs text-white/60">Awaiting review</p>
+              <p className="text-xs text-muted-foreground">Awaiting review</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Code className="w-4 h-4 mr-2 text-purple-400" />
                 Buildathon
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-foreground">
                 {submissions.filter(s => s.challengeType === 'buildathon').length}
               </div>
-              <p className="text-xs text-white/60">Project submissions</p>
+              <p className="text-xs text-muted-foreground">Project submissions</p>
             </CardContent>
           </Card>
         </div>
@@ -253,13 +253,13 @@ export default function AdminSubmissionsPage() {
         {/* Submissions List */}
         <div className="space-y-4">
           {filteredSubmissions.map((submission) => (
-            <Card key={submission.id} className="bg-black/40 border-white/20 backdrop-blur-sm">
+            <Card key={submission.id} className="surface-elevated border-border">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
                       {getStatusIcon(submission.status)}
-                      <h3 className="text-white text-lg font-semibold">{submission.challengeTitle}</h3>
+                      <h3 className="text-foreground text-lg font-semibold">{submission.challengeTitle}</h3>
                       {getTypeBadge(submission.challengeType)}
                       {getStatusBadge(submission.status)}
                     </div>
@@ -267,29 +267,29 @@ export default function AdminSubmissionsPage() {
                     <div className="grid md:grid-cols-2 gap-4 mt-4">
                       <div className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-white/70">Team</span>
-                          <span className="text-white">{submission.teamName}</span>
+                          <span className="text-muted-foreground">Team</span>
+                          <span className="text-foreground">{submission.teamName}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-white/70">Submitted</span>
-                          <span className="text-white">{formatDate(submission.submittedAt)}</span>
+                          <span className="text-muted-foreground">Submitted</span>
+                          <span className="text-foreground">{formatDate(submission.submittedAt)}</span>
                         </div>
                         {submission.language && (
                           <div className="flex justify-between">
-                            <span className="text-white/70">Language</span>
-                            <span className="text-white">{submission.language}</span>
+                            <span className="text-muted-foreground">Language</span>
+                            <span className="text-foreground">{submission.language}</span>
                           </div>
                         )}
                       </div>
                       
                       <div className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-white/70">Points</span>
-                          <span className="text-white">{submission.points}</span>
+                          <span className="text-muted-foreground">Points</span>
+                          <span className="text-foreground">{submission.points}</span>
                         </div>
                         {submission.githubLink && (
                           <div className="flex justify-between">
-                            <span className="text-white/70">GitHub</span>
+                            <span className="text-muted-foreground">GitHub</span>
                             <a 
                               href={submission.githubLink} 
                               target="_blank" 
@@ -309,7 +309,7 @@ export default function AdminSubmissionsPage() {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      className="text-white border-white/30 hover:bg-white/10 bg-transparent"
+                      className="text-foreground border-border hover:bg-accent hover:text-accent-foreground"
                       onClick={() => router.push(`/admin/submissions/${submission.id}`)}
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
@@ -323,11 +323,11 @@ export default function AdminSubmissionsPage() {
         </div>
 
         {filteredSubmissions.length === 0 && (
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border">
             <CardContent className="text-center py-12">
-              <Trophy className="w-12 h-12 text-white/50 mx-auto mb-4" />
-              <div className="text-white text-xl mb-2">No submissions found</div>
-              <div className="text-white/70">
+              <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <div className="text-foreground text-xl mb-2">No submissions found</div>
+              <div className="text-muted-foreground">
                 {searchQuery || statusFilter !== "all" || typeFilter !== "all" 
                   ? 'Try adjusting your filters' 
                   : 'No submissions have been made yet'}

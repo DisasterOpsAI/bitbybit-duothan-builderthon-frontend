@@ -82,34 +82,34 @@ export default function AdminTeamsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen oasis-bg">
+      <div className="min-h-screen bg-background">
         <AdminNavbar />
         <div className="container mx-auto px-4 py-20 text-center">
-          <div className="text-white text-xl">Loading teams...</div>
+          <div className="text-foreground text-xl">Loading teams...</div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen oasis-bg">
+    <div className="min-h-screen bg-background">
       <AdminNavbar />
 
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Team Management</h1>
-            <p className="text-white/70">View and manage registered teams</p>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Team Management</h1>
+            <p className="text-muted-foreground">View and manage registered teams</p>
           </div>
           <div className="flex items-center space-x-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 placeholder="Search teams..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-black/40 border-white/20 text-white placeholder-white/50 w-64"
+                className="pl-10 bg-background border-border text-foreground placeholder-muted-foreground w-64"
               />
             </div>
           </div>
@@ -117,46 +117,46 @@ export default function AdminTeamsPage() {
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Users className="w-4 h-4 mr-2 text-blue-400" />
                 Total Teams
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{teams.length}</div>
-              <p className="text-xs text-white/60">Registered teams</p>
+              <div className="text-2xl font-bold text-foreground">{teams.length}</div>
+              <p className="text-xs text-muted-foreground">Registered teams</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Trophy className="w-4 h-4 mr-2 text-yellow-400" />
                 Active Teams
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-foreground">
                 {teams.filter(team => team.totalPoints > 0).length}
               </div>
-              <p className="text-xs text-white/60">With submissions</p>
+              <p className="text-xs text-muted-foreground">With submissions</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-white flex items-center text-sm">
+              <CardTitle className="text-foreground flex items-center text-sm">
                 <Mail className="w-4 h-4 mr-2 text-green-400" />
                 Total Members
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-foreground">
                 {teams.reduce((sum, team) => sum + team.members.length, 0)}
               </div>
-              <p className="text-xs text-white/60">Total participants</p>
+              <p className="text-xs text-muted-foreground">Total participants</p>
             </CardContent>
           </Card>
         </div>
@@ -164,12 +164,12 @@ export default function AdminTeamsPage() {
         {/* Teams List */}
         <div className="space-y-6">
           {filteredTeams.map((team) => (
-            <Card key={team.id} className="bg-black/40 border-white/20 backdrop-blur-sm">
+            <Card key={team.id} className="surface-elevated border-border backdrop-blur-sm">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-white text-xl">{team.name}</CardTitle>
-                    <CardDescription className="text-white/70 mt-1">
+                    <CardTitle className="text-foreground text-xl">{team.name}</CardTitle>
+                    <CardDescription className="text-muted-foreground mt-1">
                       {team.members.length} member{team.members.length > 1 ? 's' : ''}
                     </CardDescription>
                   </div>
@@ -187,18 +187,18 @@ export default function AdminTeamsPage() {
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Team Members */}
                   <div>
-                    <h3 className="text-white font-semibold mb-3 flex items-center">
+                    <h3 className="text-foreground font-semibold mb-3 flex items-center">
                       <Users className="w-4 h-4 mr-2" />
                       Team Members
                     </h3>
                     <div className="space-y-2">
                       {team.members.map((member, index) => (
-                        <div key={index} className="flex items-center justify-between p-2 bg-black/20 rounded">
+                        <div key={index} className="flex items-center justify-between p-2 bg-background rounded">
                           <div>
-                            <div className="text-white font-medium">{member.name}</div>
-                            <div className="text-white/60 text-sm">{member.email}</div>
+                            <div className="text-foreground font-medium">{member.name}</div>
+                            <div className="text-muted-foreground text-sm">{member.email}</div>
                           </div>
-                          <Badge variant="outline" className="text-white/70 border-white/30">
+                          <Badge variant="outline" className="text-muted-foreground border-border">
                             {member.role}
                           </Badge>
                         </div>
@@ -208,26 +208,26 @@ export default function AdminTeamsPage() {
 
                   {/* Team Info */}
                   <div>
-                    <h3 className="text-white font-semibold mb-3 flex items-center">
+                    <h3 className="text-foreground font-semibold mb-3 flex items-center">
                       <Calendar className="w-4 h-4 mr-2" />
                       Team Information
                     </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-white/70">Registered</span>
-                        <span className="text-white">{formatDate(team.createdAt)}</span>
+                        <span className="text-muted-foreground">Registered</span>
+                        <span className="text-foreground">{formatDate(team.createdAt)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-white/70">Total Points</span>
-                        <span className="text-white">{team.totalPoints}</span>
+                        <span className="text-muted-foreground">Total Points</span>
+                        <span className="text-foreground">{team.totalPoints}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-white/70">Completed Challenges</span>
-                        <span className="text-white">{team.completedChallenges}</span>
+                        <span className="text-muted-foreground">Completed Challenges</span>
+                        <span className="text-foreground">{team.completedChallenges}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-white/70">Last Activity</span>
-                        <span className="text-white">{team.lastActivity}</span>
+                        <span className="text-muted-foreground">Last Activity</span>
+                        <span className="text-foreground">{team.lastActivity}</span>
                       </div>
                     </div>
                   </div>
@@ -237,7 +237,7 @@ export default function AdminTeamsPage() {
                 <div className="mt-6 flex justify-end space-x-3">
                   <Button 
                     variant="outline" 
-                    className="text-white border-white/30 hover:bg-white/10 bg-transparent"
+                    className="text-foreground border-border hover:bg-background bg-transparent"
                     onClick={() => router.push(`/admin/teams/${team.id}`)}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
@@ -250,11 +250,11 @@ export default function AdminTeamsPage() {
         </div>
 
         {filteredTeams.length === 0 && (
-          <Card className="bg-black/40 border-white/20 backdrop-blur-sm">
+          <Card className="surface-elevated border-border backdrop-blur-sm">
             <CardContent className="text-center py-12">
-              <Users className="w-12 h-12 text-white/50 mx-auto mb-4" />
-              <div className="text-white text-xl mb-2">No teams found</div>
-              <div className="text-white/70">
+              <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <div className="text-foreground text-xl mb-2">No teams found</div>
+              <div className="text-muted-foreground">
                 {searchQuery ? 'Try adjusting your search query' : 'No teams have registered yet'}
               </div>
             </CardContent>
