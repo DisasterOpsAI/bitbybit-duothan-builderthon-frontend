@@ -17,7 +17,7 @@ export default function HomePage() {
             <Link href="/auth/team-login">
               <Button
                 variant="outline"
-                className="border-border text-foreground hover:bg-foreground hover:text-background bg-transparent"
+                className="border-border text-foreground hover:bg-accent hover:text-accent-foreground bg-transparent"
               >
                 Team Login
               </Button>
@@ -51,7 +51,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-border text-foreground hover:bg-foreground hover:text-background px-8 py-3 bg-transparent"
+                className="border-border text-foreground hover:bg-accent hover:text-accent-foreground px-8 py-3 bg-transparent"
               >
                 <Trophy className="w-5 h-5 mr-2" />
                 View Leaderboard

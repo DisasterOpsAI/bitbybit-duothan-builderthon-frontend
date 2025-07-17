@@ -67,7 +67,7 @@ export default function TeamLoginPage() {
           <Link href="/auth/team-signup">
             <Button
               variant="outline"
-              className="border-border text-foreground hover:bg-foreground hover:text-background bg-transparent"
+              className="border-border text-foreground hover:bg-accent hover:text-accent-foreground bg-transparent"
             >
               New Team? Join Here
             </Button>

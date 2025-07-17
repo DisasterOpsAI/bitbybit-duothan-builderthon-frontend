@@ -32,14 +32,14 @@ export function AdminNavbar() {
 
         <div className="flex items-center space-x-4">
           <Link href="/admin/challenges">
-            <Button variant="outline" className="text-foreground border-border hover:bg-secondary bg-transparent">
+            <Button variant="outline" className="border-border text-foreground hover:bg-accent hover:text-accent-foreground bg-transparent">
               <Code className="w-4 h-4 mr-2" />
               Challenges
             </Button>
           </Link>
 
           <Link href="/admin/teams">
-            <Button variant="outline" className="text-foreground border-border hover:bg-secondary bg-transparent">
+            <Button variant="outline" className="border-border text-foreground hover:bg-accent hover:text-accent-foreground bg-transparent">
               <Users className="w-4 h-4 mr-2" />
               Teams
             </Button>
@@ -47,26 +47,26 @@ export function AdminNavbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="text-foreground border-border hover:bg-secondary bg-transparent">
+              <Button variant="outline" className="border-border text-foreground hover:bg-accent hover:text-accent-foreground bg-transparent">
                 <Settings className="w-4 h-4 mr-2" />
                 More
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-card border-border">
+            <DropdownMenuContent className="bg-card border-border backdrop-blur-sm">
               <DropdownMenuItem asChild>
-                <Link href="/admin/submissions" className="text-foreground hover:bg-secondary cursor-pointer">
+                <Link href="/admin/submissions" className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer">
                   <Trophy className="w-4 h-4 mr-2" />
                   Submissions
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/admin/analytics" className="text-foreground hover:bg-secondary cursor-pointer">
+                <Link href="/admin/analytics" className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer">
                   <BarChart3 className="w-4 h-4 mr-2" />
                   Analytics
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-border" />
-              <DropdownMenuItem onClick={handleSignOut} className="text-foreground hover:bg-secondary">
+              <DropdownMenuItem onClick={handleSignOut} className="text-foreground hover:bg-destructive hover:text-destructive-foreground">
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </DropdownMenuItem>

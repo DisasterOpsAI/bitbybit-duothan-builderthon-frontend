@@ -27,7 +27,7 @@ export function TeamNavbar() {
 
         <div className="flex items-center space-x-4">
           <Link href="/leaderboard">
-            <Button variant="outline" className="border-border text-foreground hover:bg-accent bg-transparent">
+            <Button variant="outline" className="border-border text-foreground hover:bg-accent hover:text-accent-foreground bg-transparent">
               <Trophy className="w-4 h-4 mr-2" />
               Leaderboard
             </Button>
@@ -35,13 +35,13 @@ export function TeamNavbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="border-border text-foreground hover:bg-accent bg-transparent">
+              <Button variant="outline" className="border-border text-foreground hover:bg-accent hover:text-accent-foreground bg-transparent">
                 <User className="w-4 h-4 mr-2" />
                 {user?.displayName || localStorage.getItem("teamName") || "Team"}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-background border-border">
-              <DropdownMenuItem onClick={handleSignOut} className="text-foreground hover:bg-accent">
+            <DropdownMenuContent className="bg-card border-border backdrop-blur-sm">
+              <DropdownMenuItem onClick={handleSignOut} className="text-foreground hover:bg-destructive hover:text-destructive-foreground">
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </DropdownMenuItem>
