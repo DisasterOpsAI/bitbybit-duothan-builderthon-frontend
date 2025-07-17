@@ -123,7 +123,7 @@ export default function AdminDashboard() {
               </Button>
             </Link>
             <Link href="/admin/settings">
-              <Button variant="outline" className="text-foreground border-border hover:bg-secondary">
+              <Button variant="outline" className="text-foreground border-border hover:bg-accent hover:text-accent-foreground bg-transparent">
                 <Settings className="w-4 h-4 mr-2" />
                 Settings
               </Button>
@@ -209,25 +209,25 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Link href="/admin/challenges">
-                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-secondary">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-accent hover:text-accent-foreground transition-all duration-200 ease-in-out hover:scale-[1.02] hover:shadow-sm">
                       <Code className="w-4 h-4 mr-2" />
                       Manage Challenges
                     </Button>
                   </Link>
                   <Link href="/admin/teams">
-                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-secondary">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-accent hover:text-accent-foreground transition-all duration-200 ease-in-out hover:scale-[1.02] hover:shadow-sm">
                       <Users className="w-4 h-4 mr-2" />
                       View Teams
                     </Button>
                   </Link>
                   <Link href="/admin/submissions">
-                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-secondary">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-accent hover:text-accent-foreground transition-all duration-200 ease-in-out hover:scale-[1.02] hover:shadow-sm">
                       <Trophy className="w-4 h-4 mr-2" />
                       Review Submissions
                     </Button>
                   </Link>
                   <Link href="/admin/analytics">
-                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-secondary">
+                    <Button variant="outline" className="w-full justify-start bg-transparent text-foreground border-border hover:bg-accent hover:text-accent-foreground transition-all duration-200 ease-in-out hover:scale-[1.02] hover:shadow-sm">
                       <BarChart3 className="w-4 h-4 mr-2" />
                       View Analytics
                     </Button>
