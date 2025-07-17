@@ -29,11 +29,21 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     fetchLeaderboard()
+    
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(() => {
+      fetchLeaderboard(false) // Don't show loading on auto-refresh
+    }, 30000)
+    
+    return () => clearInterval(interval)
   }, [])
 
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = async (showLoading = true) => {
+    if (showLoading) {
+      setIsLoading(true)
+    }
+    
     try {
-      // TODO: Backend Integration Point 8
       // Fetch leaderboard data
       const [leaderboardRes, statsRes] = await Promise.all([fetch("/api/leaderboard"), fetch("/api/stats")])
 
@@ -46,7 +56,9 @@ export default function LeaderboardPage() {
     } catch (error) {
       console.error("Failed to fetch leaderboard:", error)
     } finally {
-      setIsLoading(false)
+      if (showLoading) {
+        setIsLoading(false)
+      }
     }
   }
 
@@ -93,7 +105,17 @@ export default function LeaderboardPage() {
 
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-8"></div>
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-foreground mb-2">Leaderboard</h1>
+          <p className="text-muted-foreground mb-4">Real-time team rankings and competition stats</p>
+          <Button 
+            onClick={() => fetchLeaderboard()} 
+            disabled={isLoading}
+            className="accent-button"
+          >
+            {isLoading ? "Refreshing..." : "Refresh Data"}
+          </Button>
+        </div>
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">

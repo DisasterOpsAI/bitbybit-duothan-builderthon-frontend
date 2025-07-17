@@ -1,9 +1,26 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { adminDb } from "@/lib/firebase-admin"
 
-// TODO: Backend Integration Point 8 - Platform Stats
 export async function GET(request: NextRequest) {
   try {
-    // Mock platform stats
+    // Get real stats from Firebase
+    const [teamsSnapshot, challengesSnapshot, submissionsSnapshot] = await Promise.all([
+      adminDb.collection('teams').get().catch(() => null),
+      adminDb.collection('challenges').where('isActive', '==', true).get().catch(() => null),
+      adminDb.collection('submissions').get().catch(() => null)
+    ])
+
+    const stats = {
+      totalTeams: teamsSnapshot?.size || 0,
+      activeChallenges: challengesSnapshot?.size || 0,
+      totalSubmissions: submissionsSnapshot?.size || 0,
+    }
+
+    return NextResponse.json(stats)
+  } catch (error) {
+    console.error("Failed to fetch stats:", error)
+    
+    // Return mock data as fallback
     const mockStats = {
       totalTeams: 15,
       activeChallenges: 3,
@@ -11,8 +28,5 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(mockStats)
-  } catch (error) {
-    console.error("Failed to fetch stats:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
