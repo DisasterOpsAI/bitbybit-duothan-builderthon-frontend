@@ -237,7 +237,7 @@ export default function AdminTeamsPage() {
                 <div className="mt-6 flex justify-end space-x-3">
                   <Button 
                     variant="outline" 
-                    className="text-foreground border-border hover:bg-background bg-transparent"
+                    className="text-foreground border-border hover:bg-accent hover:text-accent-foreground bg-transparent"
                     onClick={() => router.push(`/admin/teams/${team.id}`)}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
