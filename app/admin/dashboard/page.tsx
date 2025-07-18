@@ -61,9 +61,32 @@ export default function AdminDashboard() {
       } else if (response.status === 401) {
         localStorage.removeItem("adminToken")
         router.push("/auth/admin-login")
+      } else {
+        // Handle server errors or Firebase issues
+        console.error("Failed to fetch dashboard stats:", response.status, response.statusText)
+        
+        // Set mock data for development/demo purposes
+        setStats({
+          totalTeams: 0,
+          activeChallenges: 0,
+          totalSubmissions: 0,
+          completedChallenges: 0,
+          recentActivity: [],
+          leaderboardSnapshot: []
+        })
       }
     } catch (error) {
       console.error("Failed to fetch dashboard stats:", error)
+      
+      // Set mock data for development/demo purposes
+      setStats({
+        totalTeams: 0,
+        activeChallenges: 0,
+        totalSubmissions: 0,
+        completedChallenges: 0,
+        recentActivity: [],
+        leaderboardSnapshot: []
+      })
     } finally {
       setIsLoading(false)
     }
