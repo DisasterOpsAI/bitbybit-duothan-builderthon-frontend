@@ -72,7 +72,15 @@ export const GET = requireAdmin(async (request: NextRequest) => {
     recentActivity.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
 
     // Get leaderboard snapshot
-    const teams = teamsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    const teams = teamsSnapshot.docs.map(doc => {
+      const data = doc.data()
+      return { 
+        id: doc.id, 
+        name: data.name || 'Unknown Team',
+        totalPoints: data.totalPoints || 0,
+        ...data
+      }
+    })
     const leaderboardSnapshot = teams
       .sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0))
       .slice(0, 5)

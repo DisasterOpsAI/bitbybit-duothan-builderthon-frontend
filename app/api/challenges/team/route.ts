@@ -10,7 +10,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Team authentication required" }, { status: 401 })
     }
 
-    console.log("Fetching active challenges for team:", teamId)
+    console.log("Fetching challenges for team:", teamId)
+
+    // Check if Firebase Admin is initialized
+    if (!adminDb) {
+      console.error("Firebase Admin not initialized")
+      return NextResponse.json({ 
+        error: "Database connection failed", 
+        details: "Firebase Admin SDK not initialized"
+      }, { status: 500 })
+    }
 
     // First, let's check ALL challenges to see what's in the database
     const allChallenges = await adminChallengesCRUD.getAll()
@@ -20,6 +29,11 @@ export async function GET(request: NextRequest) {
     // Get all active challenges
     const challengesData = await adminChallengesCRUD.getActive()
     console.log("Found active challenges:", challengesData.length)
+
+    if (challengesData.length === 0) {
+      console.warn("No active challenges found in database")
+      return NextResponse.json([])
+    }
 
     const challenges = []
     
