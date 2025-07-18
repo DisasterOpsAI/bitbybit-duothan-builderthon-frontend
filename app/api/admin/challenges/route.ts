@@ -1,100 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth-middleware";
-import {
-  adminChallengesCRUD,
-  adminSubmissionsCRUD,
-} from "@/lib/firestore-crud";
-import { Challenge } from "@/lib/database-schema";
-import { adminDb, adminInitialized } from '@/lib/firebase-admin'
+import { adminDb } from '@/lib/firebase-admin'
 
 // Force dynamic rendering for this route
 export const dynamic = "force-dynamic";
 
 export const GET = requireAdmin(async (request: NextRequest) => {
   try {
-    // Check if Firebase Admin is initialized
-    if (!adminInitialized || !adminDb) {
-      console.error('Firebase Admin not initialized in challenges route');
-      // Return empty challenges array for development/demo purposes
-      return NextResponse.json([]);
-    }
-
-    const challengesData = await adminChallengesCRUD.getAll();
-
+    const challengesSnapshot = await adminDb.collection('challenges').get();
     const challenges = [];
-    for (const challengeData of challengesData) {
-      // Get submission stats
-      const submissions = await adminSubmissionsCRUD.getByChallengeId(
-        challengeData.id
-      );
-
-      const totalSubmissions = submissions.length;
-      const completions = submissions.filter(
-        (submission) =>
-          submission.status === "accepted" && submission.type === "buildathon"
-      ).length;
-
+    
+    challengesSnapshot.forEach((doc) => {
+      const data = doc.data();
       challenges.push({
-        id: challengeData.id,
-        title: challengeData.title,
-        difficulty: getDifficultyFromPoints(challengeData.points),
-        points: challengeData.points,
-        status: challengeData.isActive ? "active" : "draft",
-        submissions: totalSubmissions,
-        completions,
-        // Fix: Handle both Firestore Timestamp and regular Date
-        createdAt:
-          challengeData.createdAt instanceof Date
-            ? challengeData.createdAt.toISOString().split("T")[0]
-            : challengeData.createdAt && typeof challengeData.createdAt.toDate === 'function'
-              ? challengeData.createdAt.toDate().toISOString().split("T")[0]
-              : new Date().toISOString().split("T")[0],
+        id: doc.id,
+        title: data.title || 'Unknown Challenge',
+        difficulty: getDifficultyFromPoints(data.points || 100),
+        points: data.points || 100,
+        status: data.isActive ? "active" : "draft",
+        submissions: 0,
+        completions: 0,
+        createdAt: data.createdAt ? data.createdAt.toDate().toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
       });
-    }
+    });
 
     return NextResponse.json(challenges);
   } catch (error) {
-    console.error("Failed to fetch admin challenges:", error);
-
-    // Better error handling
-    let errorMessage = "Unknown error occurred";
-    if (error instanceof Error) {
-      console.error("Error message:", error.message);
-      errorMessage = error.message;
-    }
-
-    return NextResponse.json(
-      {
-        error: "Internal server error",
-        message:
-          process.env.NODE_ENV === "development"
-            ? errorMessage
-            : "Something went wrong",
-      },
-      { status: 500 }
-    );
+    return NextResponse.json([], { status: 200 });
   }
 });
 
 export const POST = requireAdmin(async (request: NextRequest) => {
   try {
-    // Check if Firebase Admin is initialized
-    if (!adminInitialized || !adminDb) {
-      console.error('Firebase Admin not initialized in challenges route');
-      return NextResponse.json({ 
-        error: "Firebase Admin not initialized. Cannot create challenge." 
-      }, { status: 500 });
-    }
-
     const challengeData = await request.json();
 
     // Validate required fields
-    if (
-      !challengeData.title ||
-      !challengeData.algorithmicProblem ||
-      !challengeData.buildathonProblem ||
-      !challengeData.flag
-    ) {
+    if (!challengeData.title) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -102,42 +43,29 @@ export const POST = requireAdmin(async (request: NextRequest) => {
     }
 
     // Create new challenge
-    const newChallenge: Omit<Challenge, 'id' | 'createdAt' | 'updatedAt'> = {
+    const newChallenge = {
       title: challengeData.title,
       description: challengeData.description || "",
       points: challengeData.points || 100,
       order: challengeData.order || 0,
       isActive: challengeData.isActive || false,
-      algorithmicProblem: challengeData.algorithmicProblem,
-      buildathonProblem: challengeData.buildathonProblem,
-      flag: challengeData.flag,
+      algorithmicProblem: challengeData.algorithmicProblem || "",
+      buildathonProblem: challengeData.buildathonProblem || "",
+      flag: challengeData.flag || "",
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
-    const challengeId = await adminChallengesCRUD.create(newChallenge);
+    const docRef = await adminDb.collection('challenges').add(newChallenge);
 
     return NextResponse.json({
       success: true,
       message: "Challenge created successfully",
-      id: challengeId,
+      id: docRef.id,
     });
   } catch (error) {
-    console.error("Failed to create challenge:", error);
-
-    // Better error handling
-    let errorMessage = "Unknown error occurred";
-    if (error instanceof Error) {
-      console.error("Error message:", error.message);
-      errorMessage = error.message;
-    }
-
     return NextResponse.json(
-      {
-        error: "Internal server error",
-        message:
-          process.env.NODE_ENV === "development"
-            ? errorMessage
-            : "Something went wrong",
-      },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
