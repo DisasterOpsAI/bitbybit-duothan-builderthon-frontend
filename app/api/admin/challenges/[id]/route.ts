@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth-middleware";
-import { adminChallengesCRUD } from "@/lib/firestore-crud";
+import { adminDb } from "@/lib/firebase-admin";
 
 // Force dynamic rendering for this route
 export const dynamic = "force-dynamic";
@@ -10,32 +10,24 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   return requireAdmin(async (req: NextRequest) => {
     try {
       const challengeId = params.id;
-      const challenge = await adminChallengesCRUD.getById(challengeId);
+      const doc = await adminDb.collection('challenges').doc(challengeId).get();
 
-      if (!challenge) {
+      if (!doc.exists) {
         return NextResponse.json(
           { error: "Challenge not found" },
           { status: 404 }
         );
       }
 
+      const challenge = {
+        id: doc.id,
+        ...doc.data()
+      };
+
       return NextResponse.json(challenge);
     } catch (error) {
-      console.error("Failed to fetch challenge:", error);
-
-      let errorMessage = "Unknown error occurred";
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
       return NextResponse.json(
-        {
-          error: "Internal server error",
-          message:
-            process.env.NODE_ENV === "development"
-              ? errorMessage
-              : "Something went wrong",
-        },
+        { error: "Internal server error" },
         { status: 500 }
       );
     }
@@ -50,41 +42,28 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       const updateData = await req.json();
 
       // Validate required fields
-      if (
-        !updateData.title ||
-        !updateData.algorithmicProblem ||
-        !updateData.buildathonProblem ||
-        !updateData.flag
-      ) {
+      if (!updateData.title) {
         return NextResponse.json(
           { error: "Missing required fields" },
           { status: 400 }
         );
       }
 
-      const updatedChallenge = await adminChallengesCRUD.update(challengeId, updateData);
+      // Update the challenge in Firestore
+      const updatePayload = {
+        ...updateData,
+        updatedAt: new Date()
+      };
+
+      await adminDb.collection('challenges').doc(challengeId).update(updatePayload);
 
       return NextResponse.json({
         success: true,
-        message: "Challenge updated successfully",
-        challenge: updatedChallenge,
+        message: "Challenge updated successfully"
       });
     } catch (error) {
-      console.error("Failed to update challenge:", error);
-
-      let errorMessage = "Unknown error occurred";
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
       return NextResponse.json(
-        {
-          error: "Internal server error",
-          message:
-            process.env.NODE_ENV === "development"
-              ? errorMessage
-              : "Something went wrong",
-        },
+        { error: "Internal server error" },
         { status: 500 }
       );
     }
@@ -96,28 +75,15 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
   return requireAdmin(async (req: NextRequest) => {
     try {
       const challengeId = params.id;
-      await adminChallengesCRUD.delete(challengeId);
+      await adminDb.collection('challenges').doc(challengeId).delete();
 
       return NextResponse.json({
         success: true,
         message: "Challenge deleted successfully",
       });
     } catch (error) {
-      console.error("Failed to delete challenge:", error);
-
-      let errorMessage = "Unknown error occurred";
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
       return NextResponse.json(
-        {
-          error: "Internal server error",
-          message:
-            process.env.NODE_ENV === "development"
-              ? errorMessage
-              : "Something went wrong",
-        },
+        { error: "Internal server error" },
         { status: 500 }
       );
     }
