@@ -5,13 +5,20 @@ import {
   adminSubmissionsCRUD,
 } from "@/lib/firestore-crud";
 import { Challenge } from "@/lib/database-schema";
-import { adminDb } from '@/lib/firebase-admin'
+import { adminDb, adminInitialized } from '@/lib/firebase-admin'
 
 // Force dynamic rendering for this route
 export const dynamic = "force-dynamic";
 
 export const GET = requireAdmin(async (request: NextRequest) => {
   try {
+    // Check if Firebase Admin is initialized
+    if (!adminInitialized || !adminDb) {
+      console.error('Firebase Admin not initialized in challenges route');
+      // Return empty challenges array for development/demo purposes
+      return NextResponse.json([]);
+    }
+
     const challengesData = await adminChallengesCRUD.getAll();
 
     const challenges = [];
@@ -71,6 +78,14 @@ export const GET = requireAdmin(async (request: NextRequest) => {
 
 export const POST = requireAdmin(async (request: NextRequest) => {
   try {
+    // Check if Firebase Admin is initialized
+    if (!adminInitialized || !adminDb) {
+      console.error('Firebase Admin not initialized in challenges route');
+      return NextResponse.json({ 
+        error: "Firebase Admin not initialized. Cannot create challenge." 
+      }, { status: 500 });
+    }
+
     const challengeData = await request.json();
 
     // Validate required fields

@@ -1,25 +1,61 @@
 import admin from "firebase-admin";
 
-// Check if we're in a build environment
-const isBuilding = process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build';
-
-// Check if we have the required environment variables
-const hasRequiredEnvVars = 
-  process.env.FIREBASE_ADMIN_PRIVATE_KEY &&
-  process.env.FIREBASE_ADMIN_CLIENT_EMAIL &&
-  process.env.FIREBASE_ADMIN_PROJECT_ID;
-
 let adminInitialized = false;
 
-// Only initialize Firebase Admin if we're not in build mode and have required env vars
-if (!isBuilding && !admin.apps.length && hasRequiredEnvVars) {
+// Create safe getter functions with lazy initialization
+function getAdminAuth() {
+  if (!adminInitialized) {
+    initializeFirebaseAdmin();
+  }
+  if (!adminInitialized) {
+    console.warn("Firebase Admin not initialized. Returning null.");
+    return null;
+  }
+  return admin.auth();
+}
+
+function getAdminDb() {
+  if (!adminInitialized) {
+    initializeFirebaseAdmin();
+  }
+  if (!adminInitialized) {
+    console.warn("Firebase Admin not initialized. Returning null.");
+    return null;
+  }
+  return admin.firestore();
+}
+
+// Lazy initialization function
+function initializeFirebaseAdmin() {
+  if (adminInitialized || admin.apps.length > 0) {
+    return;
+  }
+  
+  const isBuilding = process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build';
+  const hasRequiredEnvVars = 
+    process.env.FIREBASE_ADMIN_PRIVATE_KEY &&
+    process.env.FIREBASE_ADMIN_CLIENT_EMAIL &&
+    process.env.FIREBASE_ADMIN_PROJECT_ID;
+  
+  if (isBuilding) {
+    console.log("Skipping Firebase Admin initialization during build");
+    return;
+  }
+  
+  if (!hasRequiredEnvVars) {
+    console.warn("Firebase Admin SDK not initialized: Missing required environment variables");
+    console.warn("Required: FIREBASE_ADMIN_PRIVATE_KEY, FIREBASE_ADMIN_CLIENT_EMAIL, FIREBASE_ADMIN_PROJECT_ID");
+    return;
+  }
+  
   try {
-    // Use environment variables for Firebase Admin SDK credentials
+    console.log("Initializing Firebase Admin SDK...");
+    
     const serviceAccount = {
       type: "service_account",
       project_id: process.env.FIREBASE_ADMIN_PROJECT_ID,
       private_key_id: process.env.FIREBASE_ADMIN_PRIVATE_KEY_ID,
-      private_key: process.env.FIREBASE_ADMIN_PRIVATE_KEY.replace(/\\n/g, "\n"),
+      private_key: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
       client_email: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
       client_id: process.env.FIREBASE_ADMIN_CLIENT_ID,
       auth_uri: process.env.FIREBASE_ADMIN_AUTH_URI || "https://accounts.google.com/o/oauth2/auth",
@@ -38,34 +74,14 @@ if (!isBuilding && !admin.apps.length && hasRequiredEnvVars) {
     console.log("Firebase Admin SDK initialized successfully");
   } catch (error: any) {
     console.error("Firebase admin initialization error", error.message);
+    console.error("Full error:", error);
     adminInitialized = false;
   }
-} else if (isBuilding) {
-  console.log("Skipping Firebase Admin initialization during build");
-} else if (!hasRequiredEnvVars) {
-  console.warn("Firebase Admin SDK not initialized: Missing required environment variables");
-  console.warn("Required: FIREBASE_ADMIN_PRIVATE_KEY, FIREBASE_ADMIN_CLIENT_EMAIL, FIREBASE_ADMIN_PROJECT_ID");
-}
-
-// Create safe getter functions
-function getAdminAuth() {
-  if (!adminInitialized) {
-    console.warn("Firebase Admin not initialized. Returning null.");
-    return null;
-  }
-  return admin.auth();
-}
-
-function getAdminDb() {
-  if (!adminInitialized) {
-    console.warn("Firebase Admin not initialized. Returning null.");
-    return null;
-  }
-  return admin.firestore();
 }
 
 // Export functions that handle initialization gracefully
 export const adminAuth = getAdminAuth();
 export const adminDb = getAdminDb();
+export const getAdminInitialized = () => adminInitialized;
 export { adminInitialized };
 export default admin;
